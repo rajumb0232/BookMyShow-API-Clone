@@ -5,7 +5,7 @@
 <p> Production house will add the films and theatre Owner will create shows for 
 the available films,</p>
 <p> the shows will have the details of the film, Screen and the theatre. 
-<p> The user will be able to access the show in a parƟcular location,</p> 
+<p> The user will be able to access the show in a particular location,</p> 
 <p> then he can select the desired show and the screen and seat he wants, </p>
 <p>there will be availability of ranges of seats (classic, gold and premium).</p>
 <p> The project will be having several functionalities and will be easy to use. The 
