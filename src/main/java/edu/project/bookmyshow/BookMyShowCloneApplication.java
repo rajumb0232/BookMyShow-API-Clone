@@ -10,8 +10,6 @@ public class BookMyShowCloneApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BookMyShowCloneApplication.class, args);
-		 Genre g = Genre.THRILLER;
-		 System.out.println(g);
 	}
 
 }
