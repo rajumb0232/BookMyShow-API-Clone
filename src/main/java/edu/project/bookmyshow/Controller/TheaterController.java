@@ -18,29 +18,24 @@ import edu.project.bookmyshow.util.ResponseStructure;
 @RestController
 @RequestMapping("/theater")
 public class TheaterController {
-@Autowired
-private TheaterService service;
-@PostMapping
-public ResponseEntity<ResponseStructure<Theatre>> addTheatre(@RequestParam long ownerId,@RequestBody TheatreDto dto){
-	return service.addTheatre(ownerId, dto);
-}
-@PutMapping
-public ResponseEntity<ResponseStructure<Theatre>> updateTheatre(@RequestParam long theaterId,@RequestBody TheatreDto dto){
-	return service.updateTheatre(theaterId, dto);
-}
-@DeleteMapping
-public ResponseEntity<ResponseStructure<Theatre>> deleteTheatre(@RequestParam long theaterId){
-	return service.deleteTheatre(theaterId);
-}
+	@Autowired
+	private TheaterService service;
 
+	@PostMapping
+	public ResponseEntity<ResponseStructure<Theatre>> addTheatre(@RequestParam long ownerId,
+			@RequestBody TheatreDto dto) {
+		return service.addTheatre(ownerId, dto);
+	}
 
+	@PutMapping
+	public ResponseEntity<ResponseStructure<Theatre>> updateTheatre(@RequestParam long theaterId,
+			@RequestBody TheatreDto dto) {
+		return service.updateTheatre(theaterId, dto);
+	}
 
-
-
-
-
-
-
-
+	@DeleteMapping
+	public ResponseEntity<ResponseStructure<Theatre>> deleteTheatre(@RequestParam long theaterId) {
+		return service.deleteTheatre(theaterId);
+	}
 
 }
