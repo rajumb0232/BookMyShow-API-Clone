@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import edu.project.bookmyshow.dao.OwnerDao;
 import edu.project.bookmyshow.dto.OwnerDto;
 import edu.project.bookmyshow.entity.Owner;
+import edu.project.bookmyshow.exception.OwnerNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -47,7 +48,9 @@ public class OwnerService {
 	           structure.setData(dto);
 	           return new ResponseEntity<ResponseStructure<OwnerDto>>(structure,HttpStatus.FOUND);
 		}
-		return null;
+		else {
+			throw new OwnerNotFoundByIdException("Failed to fetch Owner!!");
+		}
 	}
 	public ResponseEntity<ResponseStructure<OwnerDto>> deleteOwnerById(long ownerId) {
 		Owner owner=dao.deleteOwnerById(ownerId);
@@ -64,7 +67,9 @@ public class OwnerService {
 	           return new ResponseEntity<ResponseStructure<OwnerDto>>(structure,HttpStatus.OK);
 		}
 		
-		return null;
+		else {
+			throw new OwnerNotFoundByIdException("Failed to delete Owner!!");
+		}
 	}
 	public ResponseEntity<ResponseStructure<OwnerDto>> updateOwner(long ownerId, Owner owner2) {
 		Owner owner =dao.updateOwner(ownerId,owner2);
@@ -80,7 +85,9 @@ public class OwnerService {
 	           structure.setData(dto);
 	           return new ResponseEntity<ResponseStructure<OwnerDto>>(structure,HttpStatus.OK);
 		}
-		return null;
+		else {
+			throw new OwnerNotFoundByIdException("Failed to update Owner!!");
+		}
 	}
 
 }
