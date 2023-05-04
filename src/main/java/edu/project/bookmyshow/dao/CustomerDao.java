@@ -13,30 +13,33 @@ public class CustomerDao {
 
 	@Autowired
 	private CustomerRepo customerRepo;
-	
+
 	public Customer saveCustomer(Customer customer) {
-	return customerRepo.save(customer);	
+		return customerRepo.save(customer);
 	}
+
 	public Customer deleteCustomer(long id) {
-		Customer dbcustomer=getCustomerById(id);
-		if(dbcustomer!=null) {
+		Customer dbcustomer = getCustomerById(id);
+		if (dbcustomer != null) {
 			customerRepo.delete(dbcustomer);
 			return dbcustomer;
 		}
 		return null;
 	}
+
 	public Customer getCustomerById(long id) {
-		Optional<Customer>optional=customerRepo.findById(id);
-		if(optional.isPresent()) {
+		Optional<Customer> optional = customerRepo.findById(id);
+		if (optional.isPresent()) {
 			return customerRepo.findById(id).get();
 		}
 		return null;
 	}
+
 	public Customer updateCustomer(long id, Customer customer) {
-		Optional<Customer> optional=customerRepo.findById(id);
-		if(optional.isPresent()) {
+		Optional<Customer> optional = customerRepo.findById(id);
+		if (optional.isPresent()) {
 			customer.setCustomerId(id);
-		return customerRepo.save(customer);
+			return customerRepo.save(customer);
 		}
 		return null;
 	}
