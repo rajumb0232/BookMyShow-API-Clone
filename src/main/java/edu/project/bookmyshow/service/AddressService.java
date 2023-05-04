@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import edu.project.bookmyshow.dao.AddressDao;
+import edu.project.bookmyshow.dao.TheaterDao;
 import edu.project.bookmyshow.dto.AddressDto;
 import edu.project.bookmyshow.entity.Address;
+import edu.project.bookmyshow.entity.Theatre;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -20,13 +22,17 @@ public class AddressService {
 	@Autowired
 	private AddressDao addressDao;
 
-	public ResponseEntity<ResponseStructure<AddressDto>> saveAddress(AddressDto addressDto) {
+	@Autowired
+	private TheaterDao theaterDao;
+
+	public ResponseEntity<ResponseStructure<AddressDto>> saveAddress(AddressDto addressDto, long theatreId) {
 		ResponseStructure<AddressDto> responseStructure = new ResponseStructure<>();
-		
-		Address address =(Address)this.modelMapper.map(addressDto, Address.class);
-		//Address address = new Address();
+		Theatre theatre = theaterDao.getTheatreById(theatreId);
+		Address address = (Address) this.modelMapper.map(addressDto, Address.class);
 		Address addressDto2 = addressDao.saveAddress(address);
 		if (addressDto2 != null) {
+			theatre.setAddress(addressDto2);
+			theaterDao.updateTheatre(theatreId, theatre);
 			responseStructure.setMessage("address saved successfully");
 			responseStructure.setStatus(HttpStatus.CREATED.value());
 			responseStructure.setData(addressDto2);
@@ -34,4 +40,42 @@ public class AddressService {
 		}
 		return null;
 	}
+
+	public ResponseEntity<ResponseStructure<AddressDto>> deleteAddress(long addressId) {
+		ResponseStructure<AddressDto> responseStructure = new ResponseStructure<>();
+		Address dbAddress = addressDao.deleteAddress(addressId);
+		if (dbAddress != null) {
+			responseStructure.setMessage("address deleted successfully");
+			responseStructure.setStatus(HttpStatus.OK.value());
+			responseStructure.setData(dbAddress);
+			return new ResponseEntity<ResponseStructure<AddressDto>>(responseStructure, HttpStatus.OK);
+		}
+		return null;
+	}
+
+	public ResponseEntity<ResponseStructure<AddressDto>> updateAddress(long addressId, AddressDto addressDto) {
+		ResponseStructure<AddressDto> responseStructure = new ResponseStructure<>();
+		Address address = this.modelMapper.map(addressDto, Address.class);
+		address = addressDao.updateAddress(addressId, address);
+		if (address != null) {
+			responseStructure.setMessage("address updated successfully");
+			responseStructure.setStatus(HttpStatus.CREATED.value());
+			responseStructure.setData(address);
+			return new ResponseEntity<ResponseStructure<AddressDto>>(responseStructure, HttpStatus.CREATED);
+		}
+		return null;
+	}
+
+	public ResponseEntity<ResponseStructure<AddressDto>> getAddressById(long addressId) {
+		ResponseStructure<AddressDto> responseStructure = new ResponseStructure<>();
+		Address address = addressDao.getAddressById(addressId);
+		if (address != null) {
+			responseStructure.setMessage("address fetched successfully");
+			responseStructure.setStatus(HttpStatus.CREATED.value());
+			responseStructure.setData(address);
+			return new ResponseEntity<ResponseStructure<AddressDto>>(responseStructure, HttpStatus.CREATED);
+		}
+		return null;
+	}
+
 }

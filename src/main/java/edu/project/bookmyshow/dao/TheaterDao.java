@@ -35,4 +35,11 @@ public class TheaterDao {
 		}
 		return null;
 	}
+	public Theatre getTheatreById(long theatreId) {
+		Optional<Theatre> optional=repo.findById(theatreId);
+		if(optional.isPresent()) {
+			return optional.get();
+		}
+		return null;
+	}
 }
