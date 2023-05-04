@@ -22,6 +22,7 @@ public class AddressService {
 
 	public ResponseEntity<ResponseStructure<AddressDto>> saveAddress(AddressDto addressDto) {
 		ResponseStructure<AddressDto> responseStructure = new ResponseStructure<>();
+		
 		Address address =(Address)this.modelMapper.map(addressDto, Address.class);
 		//Address address = new Address();
 		Address addressDto2 = addressDao.saveAddress(address);
