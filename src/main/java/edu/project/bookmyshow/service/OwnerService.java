@@ -14,12 +14,13 @@ import edu.project.bookmyshow.util.ResponseStructure;
 public class OwnerService {
 	@Autowired
 	private OwnerDao dao;
-	@Autowired
-	private OwnerDto dto;
+
+	
 	
 	public ResponseEntity<ResponseStructure<OwnerDto>> saveOwner(Owner owner){
 		Owner owner2=dao.saveOwner(owner);
 		if(owner2!=null) {
+			 OwnerDto dto=new OwnerDto();
 			dto.setOwnerId(owner.getOwnerId());
 			dto.setOwnerName(owner.getOwnerName());
 			dto.setOwnerEmail(owner.getOwnerEmail());
@@ -35,6 +36,7 @@ public class OwnerService {
 	public ResponseEntity<ResponseStructure<OwnerDto>> getOwnerById(long id){
 		Owner owner=dao.getOwnerById(id);
 		if(owner!=null) {
+			 OwnerDto dto=new OwnerDto();
 			dto.setOwnerId(owner.getOwnerId());
 			dto.setOwnerName(owner.getOwnerName());
 			dto.setOwnerEmail(owner.getOwnerEmail());
@@ -50,6 +52,7 @@ public class OwnerService {
 	public ResponseEntity<ResponseStructure<OwnerDto>> deleteOwnerById(long ownerId) {
 		Owner owner=dao.deleteOwnerById(ownerId);
 		if(owner!=null) {
+			 OwnerDto dto=new OwnerDto();
 			dto.setOwnerId(owner.getOwnerId());
 			dto.setOwnerName(owner.getOwnerName());
 			dto.setOwnerEmail(owner.getOwnerEmail());
@@ -66,6 +69,7 @@ public class OwnerService {
 	public ResponseEntity<ResponseStructure<OwnerDto>> updateOwner(long ownerId, Owner owner2) {
 		Owner owner =dao.updateOwner(ownerId,owner2);
 		if(owner!=null) {
+			 OwnerDto dto=new OwnerDto();
 			dto.setOwnerId(owner.getOwnerId());
 			dto.setOwnerName(owner.getOwnerName());
 			dto.setOwnerEmail(owner.getOwnerEmail());
