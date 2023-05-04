@@ -29,19 +29,19 @@ public class CustomerController {
 	}
 
 	@DeleteMapping
-	public ResponseEntity<ResponseStructure<CustomerDto>> deleteCustomer(@RequestParam long id) {
-		return customerService.deleteCustomer(id);
+	public ResponseEntity<ResponseStructure<CustomerDto>> deleteCustomer(@RequestParam long customerId) {
+		return customerService.deleteCustomer(customerId);
 	}
 
 	@GetMapping
-	public ResponseEntity<ResponseStructure<CustomerDto>> getCustomer(@RequestParam long id) {
-		return customerService.getCustomerById(id);
+	public ResponseEntity<ResponseStructure<CustomerDto>> getCustomer(@RequestParam long customerId) {
+		return customerService.getCustomerById(customerId);
 	}
 
 	@PutMapping
-	public ResponseEntity<ResponseStructure<CustomerDto>> updateCustomer(@RequestParam long id,
+	public ResponseEntity<ResponseStructure<CustomerDto>> updateCustomer(@RequestParam long customerId,
 			@RequestBody Customer customer) {
-		return customerService.updateCustomer(id, customer);
+		return customerService.updateCustomer(customerId, customer);
 	}
 
 }

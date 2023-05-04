@@ -35,9 +35,9 @@ public class CustomerService {
 
 	}
 
-	public ResponseEntity<ResponseStructure<CustomerDto>> deleteCustomer(long id) {
+	public ResponseEntity<ResponseStructure<CustomerDto>> deleteCustomer(long customerId) {
 		ResponseStructure<CustomerDto> responseStructure = new ResponseStructure<>();
-		Customer dbcustomer = customerDao.deleteCustomer(id);
+		Customer dbcustomer = customerDao.deleteCustomer(customerId);
 		if (dbcustomer != null) {
 			customerDto.setCustomerId(dbcustomer.getCustomerId());
 			customerDto.setCustomerName(dbcustomer.getCustomerName());
@@ -51,9 +51,9 @@ public class CustomerService {
 		return null;
 	}
 
-	public ResponseEntity<ResponseStructure<CustomerDto>> getCustomerById(long id) {
+	public ResponseEntity<ResponseStructure<CustomerDto>> getCustomerById(long customerId) {
 		ResponseStructure<CustomerDto> responseStructure = new ResponseStructure<>();
-		Customer dbcustomer = customerDao.getCustomerById(id);
+		Customer dbcustomer = customerDao.getCustomerById(customerId);
 		if (dbcustomer != null) {
 			customerDto.setCustomerId(dbcustomer.getCustomerId());
 			customerDto.setCustomerName(dbcustomer.getCustomerName());
@@ -67,9 +67,9 @@ public class CustomerService {
 		return null;
 	}
 
-	public ResponseEntity<ResponseStructure<CustomerDto>> updateCustomer(long id, Customer customer) {
+	public ResponseEntity<ResponseStructure<CustomerDto>> updateCustomer(long customerId, Customer customer) {
 		ResponseStructure<CustomerDto> responseStructure = new ResponseStructure<>();
-		Customer dbcustomer = customerDao.updateCustomer(id, customer);
+		Customer dbcustomer = customerDao.updateCustomer(customerId, customer);
 		if(dbcustomer!=null) {
 			customerDto.setCustomerId(dbcustomer.getCustomerId());
 			customerDto.setCustomerName(dbcustomer.getCustomerName());

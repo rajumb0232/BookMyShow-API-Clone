@@ -29,13 +29,13 @@ public class AddressService {
 		ResponseStructure<AddressDto> responseStructure = new ResponseStructure<>();
 		Theatre theatre = theaterDao.getTheatreById(theatreId);
 		Address address = (Address) this.modelMapper.map(addressDto, Address.class);
-		Address addressDto2 = addressDao.saveAddress(address);
-		if (addressDto2 != null) {
-			theatre.setAddress(addressDto2);
+		address = addressDao.saveAddress(address);
+		if (address != null) {
+			theatre.setAddress(address);
 			theaterDao.updateTheatre(theatreId, theatre);
 			responseStructure.setMessage("address saved successfully");
 			responseStructure.setStatus(HttpStatus.CREATED.value());
-			responseStructure.setData(addressDto2);
+			responseStructure.setData(address);
 			return new ResponseEntity<ResponseStructure<AddressDto>>(responseStructure, HttpStatus.CREATED);
 		}
 		return null;
