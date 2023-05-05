@@ -1,11 +1,13 @@
 package edu.project.bookmyshow.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import edu.project.bookmyshow.entity.Address;
+import edu.project.bookmyshow.entity.Theatre;
 import edu.project.bookmyshow.repository.AddressRepo;
 
 @Repository
@@ -42,5 +44,11 @@ public class AddressDao {
 			return addressRepo.save(address);
 		}
 		return null;
+	}
+	public List<Theatre> getAddressByCity(String city) {
+		if( addressRepo.getTheatresBYCity(city).isEmpty()) {
+			return null;
+		}
+		return addressRepo.getTheatresBYCity(city);
 	}
 }

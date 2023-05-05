@@ -20,7 +20,7 @@ public class Movie {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int movieId;
+	private long movieId;
 	private String movieName;
 	private Genre genre1;
 	private Genre genre2;
