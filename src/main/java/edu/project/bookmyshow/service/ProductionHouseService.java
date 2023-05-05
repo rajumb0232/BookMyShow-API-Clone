@@ -13,7 +13,9 @@ import edu.project.bookmyshow.dto.ProductionHouseDto;
 
 import edu.project.bookmyshow.entity.Owner;
 import edu.project.bookmyshow.entity.ProductionHouse;
-
+import edu.project.bookmyshow.exception.OwnerNotFoundByIdException;
+import edu.project.bookmyshow.exception.ProductionNotFoundByIdException;
+import edu.project.bookmyshow.exception.ScreenNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -30,19 +32,20 @@ public class ProductionHouseService {
 
 		ProductionHouse house =(ProductionHouse)this.modelMapper.map(houseDto, ProductionHouse.class);
 		if(owner!=null) {
+		   	ResponseStructure<ProductionHouse> structure = new ResponseStructure<>();
             house.setOwner(owner);
             ProductionHouse house1 =houseDao.addProductionHouse(house);
             if(house1!=null) {
-            	ResponseStructure<ProductionHouse> structure = new ResponseStructure<>();
+         
                structure.setMessage("ProductionHouse Saved Successfully");
                structure.setStatus(HttpStatus.CREATED.value());
                structure.setData(house1);
-               return new ResponseEntity<ResponseStructure<ProductionHouse>>(structure, HttpStatus.CREATED); 
+               
             }
-            return null;
+            return new ResponseEntity<ResponseStructure<ProductionHouse>>(structure, HttpStatus.CREATED); 
 			
 		}else {
-			return null;
+			throw new OwnerNotFoundByIdException("Failed to add ProductionHouse!!");
 //			ownerIdNotFOund
 		}
 		
@@ -59,7 +62,7 @@ public class ProductionHouseService {
 			return new ResponseEntity<ResponseStructure<ProductionHouse>>(structure, HttpStatus.OK);
 		}else {
 //			throw ProductionHouseId found exception
-			return null;
+			throw new ProductionNotFoundByIdException("Failed to update ProductionHouse!!");
 		}
 	}
 	public ResponseEntity<ResponseStructure<ProductionHouse>> deleteProductionHouse(long houseId){
@@ -73,7 +76,7 @@ public class ProductionHouseService {
 			return new ResponseEntity<ResponseStructure<ProductionHouse>>(structure, HttpStatus.FOUND);
 		}else {
 //			ProductionHouse id not found
-			return null;
+			throw new ProductionNotFoundByIdException("Failed to delete ProductionHouse!!");
 		}
 	}
 	public ResponseEntity<ResponseStructure<ProductionHouse>> getProductionHouse(long houseId){
@@ -87,7 +90,7 @@ public class ProductionHouseService {
 				return new ResponseEntity<ResponseStructure<ProductionHouse>>(structure, HttpStatus.FOUND);
 			}else {
 //				ProductionHouse id not found
-				return null;
+				throw new ProductionNotFoundByIdException("Failed to fetch ProductionHouse!!");
 			}
 			
 	}
