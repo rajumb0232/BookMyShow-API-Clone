@@ -74,4 +74,30 @@ public class BookMyShowExceptionHandler {
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> OwnerNotFoundById(OwnerNotFoundByIdException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Owner not found with the requested Id!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> ProductionHouseNotFoundById(ProductionNotFoundByIdException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("ProductionHouse not found with the requested Id!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> TheaterHouseNotFoundById(TheaterNotFoundByIdException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Theater not found with the requested Id!!");
+
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+
 }
