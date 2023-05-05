@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import edu.project.bookmyshow.dao.CustomerDao;
 import edu.project.bookmyshow.dto.CustomerDto;
 import edu.project.bookmyshow.entity.Customer;
+import edu.project.bookmyshow.exception.CustomerNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -31,7 +32,7 @@ public class CustomerService {
 			responseStructure.setData(customerDto);
 			return new ResponseEntity<ResponseStructure<CustomerDto>>(responseStructure, HttpStatus.CREATED);
 		}
-		return null;
+		throw new CustomerNotFoundByIdException("Failed to add Customer!!");
 
 	}
 
@@ -48,7 +49,7 @@ public class CustomerService {
 			responseStructure.setData(customerDto);
 			return new ResponseEntity<ResponseStructure<CustomerDto>>(responseStructure, HttpStatus.OK);
 		}
-		return null;
+		throw new CustomerNotFoundByIdException("Failed to add Customer!!");
 	}
 
 	public ResponseEntity<ResponseStructure<CustomerDto>> getCustomerById(long customerId) {
@@ -64,7 +65,7 @@ public class CustomerService {
 			responseStructure.setData(customerDto);
 			return new ResponseEntity<ResponseStructure<CustomerDto>>(responseStructure, HttpStatus.OK);
 		}
-		return null;
+		throw new CustomerNotFoundByIdException("Failed to add Customer!!");
 	}
 
 	public ResponseEntity<ResponseStructure<CustomerDto>> updateCustomer(long customerId, Customer customer) {
@@ -80,7 +81,7 @@ public class CustomerService {
 			responseStructure.setData(customerDto);
 			return new ResponseEntity<ResponseStructure<CustomerDto>>(responseStructure, HttpStatus.OK);
 		}
-		return null;	
+		throw new CustomerNotFoundByIdException("Failed to add Customer!!");
 		}
 	}
 
