@@ -4,9 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import edu.project.bookmyshow.enums.SeatStatus;
-import edu.project.bookmyshow.enums.SeatType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,10 +19,9 @@ public class Booking {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long bookingId;
 	
-	private long seatId;
-	private String seatNumber;
-	private SeatStatus seatStatus;
-	private SeatType seatType;
+	@ManyToOne 
+	@JoinColumn
+	private Seat seat;
 	
 	private double seatPrice;
 }

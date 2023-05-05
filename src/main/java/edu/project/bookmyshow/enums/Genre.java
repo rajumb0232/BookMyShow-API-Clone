@@ -1,7 +1,6 @@
 package edu.project.bookmyshow.enums;
 
 public enum Genre {
-	
 	ACTION,
 	THRILLER,
 	HORROR,
