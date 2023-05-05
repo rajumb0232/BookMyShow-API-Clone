@@ -32,6 +32,19 @@ public class ScreenService {
 		Theatre theatre = theaterDao.getTheatreById(theatreId);
 		if (theatre != null) {
 			Screen screen = (Screen) this.modelMapper.map(screenDto, Screen.class);
+//			Screen screen =new Screen();
+//		
+//			screen.setScreenName(screenDto.getScreenName());
+//			screen.setScreenType(screenDto.getScreenType());
+//			screen.setNumberOfClassicSeat(screenDto.getNumberOfClassicSeat());
+//			screen.setNumberOfGoldSeat(screenDto.getNumberOfGoldSeat());
+//			screen.setNumberOfPlatinumSeat(screen.getNumberOfPlatinumSeat());
+			//	System.out.println(screen.getScreenName());
+//				List<Screen> list = new ArrayList<>();
+//				list.add(screen);
+//				list.addAll(theatre.getScreens());
+				//theatre.getScreens().add(screen);
+				screen.setTheatre(theatre);
 			if (screen != null) {
 				screen = screenDao.saveScreen(screen);
 				List<Screen> list = new ArrayList<>();
