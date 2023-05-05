@@ -41,7 +41,7 @@ public class Theatre {
 	private Owner owner;
 	
 	@OneToMany(mappedBy = "theatre")
-	@JsonIgnore
+
 	private List<Show> shows;
 
 }
