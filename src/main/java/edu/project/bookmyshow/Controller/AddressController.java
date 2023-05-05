@@ -23,8 +23,7 @@ import edu.project.bookmyshow.util.ResponseStructure;
 @RestController
 @RequestMapping("/address")
 public class AddressController {
-	@Autowired
-	private AddressDao dao;
+
 
 	@Autowired
 	private AddressService addressService;
