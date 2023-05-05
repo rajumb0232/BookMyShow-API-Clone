@@ -66,15 +66,9 @@ public class OwnerService {
 			structure.setData(dto);
 			return new ResponseEntity<ResponseStructure<OwnerDto>>(structure, HttpStatus.OK);
 		}
-<<<<<<< HEAD
 
-		return null;
-=======
-		
-		else {
 			throw new OwnerNotFoundByIdException("Failed to delete Owner!!");
-		}
->>>>>>> 3adf7a59fe294b3c0f28d83e9cb41539b56a139a
+		
 	}
 
 	public ResponseEntity<ResponseStructure<OwnerDto>> updateOwner(long ownerId, Owner owner2) {
