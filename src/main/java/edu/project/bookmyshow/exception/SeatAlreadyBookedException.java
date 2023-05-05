@@ -1,11 +1,10 @@
 package edu.project.bookmyshow.exception;
 
 @SuppressWarnings("serial")
-public class CustomerNotFoundByIdException extends RuntimeException {
-
+public class SeatAlreadyBookedException extends RuntimeException {
 	private String message;
 
-	public CustomerNotFoundByIdException(String message) {
+	public SeatAlreadyBookedException(String message) {
 		this.message = message;
 	}
 

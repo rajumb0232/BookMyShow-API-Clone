@@ -10,6 +10,8 @@ import edu.project.bookmyshow.dao.TheaterDao;
 import edu.project.bookmyshow.dto.TheatreDto;
 import edu.project.bookmyshow.entity.Owner;
 import edu.project.bookmyshow.entity.Theatre;
+import edu.project.bookmyshow.exception.OwnerNotFoundByIdException;
+import edu.project.bookmyshow.exception.TheaterNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -27,18 +29,19 @@ public class TheaterService {
 			theatre.setTheatreId(dto.getTheatreId());
 			theatre.setTheatreName(dto.getTheatreName());
 			theatre.setOwner(owner);
+			ResponseStructure<Theatre> structure = new ResponseStructure<Theatre>();
 			Theatre theatre2 = dao.addTheatre(theatre);
 			if (theatre2 != null) {
-				ResponseStructure<Theatre> structure = new ResponseStructure<Theatre>();
+				
 				structure.setMessage("Theatre saved successfully");
 				structure.setStatus(HttpStatus.CREATED.value());
 				structure.setData(theatre2);
-				return new ResponseEntity<ResponseStructure<Theatre>>(structure, HttpStatus.CREATED);
+				
 			}
-			return null;
+			return new ResponseEntity<ResponseStructure<Theatre>>(structure, HttpStatus.CREATED);
 		} else {
-//			Theatre id not found exception 
-			return null;
+//			owner id not found exception 
+			throw new OwnerNotFoundByIdException("Failed to add Theatre!!");
 		}
 	}
 	public ResponseEntity<ResponseStructure<Theatre>> updateTheatre(long theatreId,TheatreDto dto){
@@ -53,7 +56,7 @@ public class TheaterService {
 			return new ResponseEntity<ResponseStructure<Theatre>>(structure, HttpStatus.OK);
 		}else {
 //			throw theatreIdnOt found exception
-			return null;
+			throw new TheaterNotFoundByIdException("Failed to update Theatre!!");
 		}
 	}
 	
@@ -68,7 +71,7 @@ public class TheaterService {
 			return new ResponseEntity<ResponseStructure<Theatre>>(structure, HttpStatus.FOUND);
 		}else {
 //			theatre id not found
-			return null;
+			throw new TheaterNotFoundByIdException("Failed to delete Theatre!!");
 		}
 	}
 }

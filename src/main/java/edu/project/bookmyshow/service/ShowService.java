@@ -22,7 +22,7 @@ import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
 public class ShowService {
-	
+
 	@Autowired
 	private ModelMapper mapper;
 	@Autowired
@@ -33,52 +33,49 @@ public class ShowService {
 	private ShowDao showDao;
 
 	public ResponseEntity<ResponseStructure<Show>> addShow(ShowDto showDto, long movieId, long screenId) {
-		if(showDto!=null) {
-		Show show = (Show) mapper.map(showDto, Show.class);
-		Movie movie = movieDao.getMovie(movieId);
-		if(movie!=null) {
-			show.setMovieId(movieId);
-			show.setGenre(movie.getGenre1());
-			show.setLanguage(movie.getLanguage());
-			show.setMovieNaame(movie.getMovieName());
-			show.setMovieDuration(movie.getMovieDuration());
-			show.setMovieDescription(movie.getMovieDescription());
-		}else {
-			throw new MovieNotFoundByIdException("Failed to add Show!!");
-		}
-		Screen screen = screenDao.getScreen(screenId);
-		if(screen!=null) {
-			show.setScreenId(screenId);
-			show.setScreenAvailability(ScreenAvailability.AVAILABLE);
-			show.setScreenname(screen.getScreenName());
-		}else {
-			throw new ScreenNotFoundByIdException("Failed to add Show!!");
-		}
-		showDao.addShow(show);
-		ResponseStructure<Show> responseStructure = new ResponseStructure<>();
-		responseStructure.setStatus(HttpStatus.CREATED.value());
-		responseStructure.setMessage("Show added Successfully.");
-		responseStructure.setData(show);
-		return new ResponseEntity<ResponseStructure<Show>> (responseStructure, HttpStatus.CREATED);
-		}else {
-		throw new NullObjectPassedException("Failed to add Show!!");
-		}
-		
-		
-	}
-
-	public ResponseEntity<ResponseStructure<Show>> getShow(long showId) {
-		Show show = showDao.getShow(showId);
-		if(show!=null) {
+		if (showDto != null) {
+			Show show = (Show) mapper.map(showDto, Show.class);
+			Movie movie = movieDao.getMovie(movieId);
+			if (movie != null) {
+				show.setMovieId(movieId);
+				show.setGenre(movie.getGenre1());
+				show.setLanguage(movie.getLanguage());
+				show.setMovieNaame(movie.getMovieName());
+				show.setMovieDuration(movie.getMovieDuration());
+				show.setMovieDescription(movie.getMovieDescription());
+			} else {
+				throw new MovieNotFoundByIdException("Failed to add Show!!");
+			}
+			Screen screen = screenDao.getScreen(screenId);
+			if (screen != null) {
+				show.setScreenId(screenId);
+				show.setScreenAvailability(ScreenAvailability.AVAILABLE);
+				show.setScreenname(screen.getScreenName());
+			} else {
+				throw new ScreenNotFoundByIdException("Failed to add Show!!");
+			}
+			showDao.addShow(show);
 			ResponseStructure<Show> responseStructure = new ResponseStructure<>();
 			responseStructure.setStatus(HttpStatus.CREATED.value());
 			responseStructure.setMessage("Show added Successfully.");
 			responseStructure.setData(show);
-			return new ResponseEntity<ResponseStructure<Show>> (responseStructure, HttpStatus.CREATED);
-		}else {
+			return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.CREATED);
+		} else {
+			throw new NullObjectPassedException("Failed to add Show!!");
+		}
+	}
+
+	public ResponseEntity<ResponseStructure<Show>> getShow(long showId) {
+		Show show = showDao.getShow(showId);
+		if (show != null) {
+			ResponseStructure<Show> responseStructure = new ResponseStructure<>();
+			responseStructure.setStatus(HttpStatus.CREATED.value());
+			responseStructure.setMessage("Show added Successfully.");
+			responseStructure.setData(show);
+			return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.CREATED);
+		} else {
 			throw new ShowNotFoundByIdException("Failed to find Show!!");
 		}
 	}
-	
-	
+
 }
