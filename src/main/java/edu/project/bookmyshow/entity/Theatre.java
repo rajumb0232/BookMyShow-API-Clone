@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,16 +28,20 @@ public class Theatre {
 	
 	@OneToOne 
 	@JoinColumn
+
 	private Address address;
 	
 	@OneToMany(mappedBy = "theatre")
+	@JsonIgnore
 	private List<Screen> screens;
 	
 	@ManyToOne 
 	@JoinColumn
+	@JsonIgnore
 	private Owner owner;
 	
 	@OneToMany(mappedBy = "theatre")
+	@JsonIgnore
 	private List<Show> shows;
 
 }
