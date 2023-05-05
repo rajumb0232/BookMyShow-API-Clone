@@ -11,6 +11,7 @@ import edu.project.bookmyshow.dao.TheaterDao;
 import edu.project.bookmyshow.dto.AddressDto;
 import edu.project.bookmyshow.entity.Address;
 import edu.project.bookmyshow.entity.Theatre;
+import edu.project.bookmyshow.exception.AddressNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -38,7 +39,7 @@ public class AddressService {
 			responseStructure.setData(address);
 			return new ResponseEntity<ResponseStructure<AddressDto>>(responseStructure, HttpStatus.CREATED);
 		}
-		return null;
+		throw new AddressNotFoundByIdException("Failed to add Address!!");
 	}
 
 	public ResponseEntity<ResponseStructure<AddressDto>> deleteAddress(long addressId) {
@@ -50,7 +51,7 @@ public class AddressService {
 			responseStructure.setData(dbAddress);
 			return new ResponseEntity<ResponseStructure<AddressDto>>(responseStructure, HttpStatus.OK);
 		}
-		return null;
+		throw new AddressNotFoundByIdException("Failed to add Address!!");
 	}
 
 	public ResponseEntity<ResponseStructure<AddressDto>> updateAddress(long addressId, AddressDto addressDto) {
@@ -63,7 +64,7 @@ public class AddressService {
 			responseStructure.setData(address);
 			return new ResponseEntity<ResponseStructure<AddressDto>>(responseStructure, HttpStatus.CREATED);
 		}
-		return null;
+		throw new AddressNotFoundByIdException("Failed to add Address!!");
 	}
 
 	public ResponseEntity<ResponseStructure<AddressDto>> getAddressById(long addressId) {
@@ -75,7 +76,7 @@ public class AddressService {
 			responseStructure.setData(address);
 			return new ResponseEntity<ResponseStructure<AddressDto>>(responseStructure, HttpStatus.CREATED);
 		}
-		return null;
+		throw new AddressNotFoundByIdException("Failed to add Address!!");
 	}
 
 }
