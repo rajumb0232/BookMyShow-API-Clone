@@ -32,7 +32,7 @@ public class Theatre {
 	private Address address;
 	
 	@OneToMany(mappedBy = "theatre")
-	@JsonIgnore
+	//@JsonIgnore
 	private List<Screen> screens;
 	
 	@ManyToOne 
