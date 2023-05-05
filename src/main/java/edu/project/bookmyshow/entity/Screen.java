@@ -28,7 +28,7 @@ public class Screen {
 	private ScreenType screenType;
 	
 	@OneToMany(mappedBy = "screen")
-	List<Seat> seats;
+	private List<Seat> seats;
 	
 	private int numberOfClassicSeat;
 	private int numberOfGoldSeat;
