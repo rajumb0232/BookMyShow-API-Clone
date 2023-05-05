@@ -45,6 +45,7 @@ public class BookMyShowExceptionHandler {
 		structure.setData("Show not found with the requested Id!!");
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
 	}
+
 	
 	@ExceptionHandler
 	public ResponseEntity<ResponseStructure<String>> CustomerNotFoundById(CustomerNotFoundByIdException ex){
@@ -72,4 +73,5 @@ public class BookMyShowExceptionHandler {
 		structure.setData("The requested seat is being booked for an other user!!");
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
 	}
+
 }
