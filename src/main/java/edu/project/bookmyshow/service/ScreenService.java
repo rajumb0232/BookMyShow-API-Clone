@@ -1,20 +1,17 @@
 package edu.project.bookmyshow.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import edu.project.bookmyshow.dao.ScreenDao;
 import edu.project.bookmyshow.dao.TheaterDao;
 import edu.project.bookmyshow.dto.ScreenDto;
-import edu.project.bookmyshow.dto.TheatreDto;
-import edu.project.bookmyshow.entity.Address;
 import edu.project.bookmyshow.entity.Screen;
 import edu.project.bookmyshow.entity.Theatre;
+import edu.project.bookmyshow.exception.ScreenNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -32,20 +29,31 @@ public class ScreenService {
 	public ResponseEntity<ResponseStructure<ScreenDto>> saveScreen(long theatreId, ScreenDto screenDto) {
 		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();
 		Theatre theatre = theaterDao.getTheatreById(theatreId);
+	//	System.out.println(screenDto.getScreenName());
 		if (theatre != null) {
 			Screen screen = (Screen) this.modelMapper.map(screenDto, Screen.class);
-			if (screen != null) {
+//			Screen screen =new Screen();
+//		
+//			screen.setScreenName(screenDto.getScreenName());
+//			screen.setScreenType(screenDto.getScreenType());
+//			screen.setNumberOfClassicSeat(screenDto.getNumberOfClassicSeat());
+//			screen.setNumberOfGoldSeat(screenDto.getNumberOfGoldSeat());
+//			screen.setNumberOfPlatinumSeat(screen.getNumberOfPlatinumSeat());
+			//	System.out.println(screen.getScreenName());
+//				List<Screen> list = new ArrayList<>();
+//				list.add(screen);
+//				list.addAll(theatre.getScreens());
+				theatre.getScreens().add(screen);
+				screen.setTheatre(theatre);
 				screen = screenDao.saveScreen(screen);
-				List<Screen> list = new ArrayList<>();
-				//list.add(screenDto);
-				list.addAll(theatre.getScreens());
-				theatre.setScreens(list);
 				theaterDao.updateTheatre(theatreId, theatre);
-
+				responseStructure.setMessage("address saved successfully");
+				responseStructure.setStatus(HttpStatus.CREATED.value());
+				responseStructure.setData(screen);
+				return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.CREATED);
 			}
-		}
+		throw new ScreenNotFoundByIdException("Failed to add Screen!!");
 
-		return null;
 	}
 
 }

@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.project.bookmyshow.enums.ScreenType;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +26,7 @@ public class Screen {
 	private long screenId;
 	private String screenName;
 	private ScreenType screenType;
+
 	
 	@OneToMany(mappedBy = "screen")
 	List<Seat> seats;
@@ -34,5 +37,6 @@ public class Screen {
 	
 	@ManyToOne
 	@JoinColumn
+	@JsonIgnore
 	private Theatre theatre;
 }
