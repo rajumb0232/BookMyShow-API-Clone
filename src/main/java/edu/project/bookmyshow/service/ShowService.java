@@ -46,7 +46,7 @@ public class ShowService {
 			} else {
 				throw new MovieNotFoundByIdException("Failed to add Show!!");
 			}
-			Screen screen = screenDao.getScreen(screenId);
+			Screen screen = screenDao.getScreenById(screenId);
 			if (screen != null) {
 				show.setScreenId(screenId);
 				show.setScreenAvailability(ScreenAvailability.AVAILABLE);
