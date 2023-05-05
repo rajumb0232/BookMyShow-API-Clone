@@ -29,7 +29,6 @@ public class ScreenService {
 	public ResponseEntity<ResponseStructure<ScreenDto>> saveScreen(long theatreId, ScreenDto screenDto) {
 		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();
 		Theatre theatre = theaterDao.getTheatreById(theatreId);
-	//	System.out.println(screenDto.getScreenName());
 		if (theatre != null) {
 			Screen screen = (Screen) this.modelMapper.map(screenDto, Screen.class);
 //			Screen screen =new Screen();
@@ -43,7 +42,7 @@ public class ScreenService {
 //				List<Screen> list = new ArrayList<>();
 //				list.add(screen);
 //				list.addAll(theatre.getScreens());
-				theatre.getScreens().add(screen);
+				//theatre.getScreens().add(screen);
 				screen.setTheatre(theatre);
 				screen = screenDao.saveScreen(screen);
 				theaterDao.updateTheatre(theatreId, theatre);
