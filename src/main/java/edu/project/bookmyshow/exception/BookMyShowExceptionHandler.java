@@ -31,10 +31,10 @@ public class BookMyShowExceptionHandler {
 	@ExceptionHandler
 	public ResponseEntity<ResponseStructure<String>> NullObjectPassed(NullObjectPassedException ex){
 		ResponseStructure<String> structure = new ResponseStructure<>();
-		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setStatus(HttpStatus.BAD_REQUEST.value());
 		structure.setMessage(ex.getMessage());
 		structure.setData("The object passed to save cannot be null!!");
-		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler
@@ -45,6 +45,33 @@ public class BookMyShowExceptionHandler {
 		structure.setData("Show not found with the requested Id!!");
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
 	}
+
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> CustomerNotFoundById(CustomerNotFoundByIdException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Customer not found with the requested Id!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> SeatTemporarilyBlocked(SeatTemporarilyBlockedException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("The requested seat is being blocked for an other user!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> SeatAlreadyBooked(SeatAlreadyBookedException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("The requested seat is being booked for an other user!!");
+
 	@ExceptionHandler
 	public ResponseEntity<ResponseStructure<String>> OwnerNotFoundById(OwnerNotFoundByIdException ex){
 		ResponseStructure<String> structure = new ResponseStructure<>();
@@ -67,6 +94,7 @@ public class BookMyShowExceptionHandler {
 		structure.setStatus(HttpStatus.NOT_FOUND.value());
 		structure.setMessage(ex.getMessage());
 		structure.setData("Theater not found with the requested Id!!");
+
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
 	}
 }
