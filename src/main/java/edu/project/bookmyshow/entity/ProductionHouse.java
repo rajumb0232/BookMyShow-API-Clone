@@ -11,8 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,10 +27,8 @@ public class ProductionHouse {
 	
 	@ManyToOne
 	@JoinColumn
-	@JsonIgnore
 	private Owner owner;
 	
 	@OneToMany(mappedBy = "productionHouse")
-	@JsonIgnore
 	private List<Movie> movies;
 }
