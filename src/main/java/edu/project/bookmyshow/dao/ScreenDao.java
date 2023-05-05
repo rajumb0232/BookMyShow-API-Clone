@@ -13,13 +13,35 @@ public class ScreenDao {
 
 	@Autowired
 	private ScreenRepo screenRepo;
-	
-	public Screen getScreen(long screenId) {
+
+	public Screen getScreenById(long screenId) {
 		Optional<Screen> optional = screenRepo.findById(screenId);
-		if(optional.isEmpty()) {
+		if (optional.isEmpty()) {
 			return null;
-		}else {
+		} else {
 			return optional.get();
 		}
+	}
+
+	public Screen saveScreen(Screen screen) {
+		return screenRepo.save(screen);
+	}
+
+	public Screen updateScreen(long screenId, Screen screen) {
+		Optional<Screen> optional = screenRepo.findById(screenId);
+		if (optional.isPresent()) {
+			screen.setScreenId(screenId);
+			return screenRepo.save(screen);
+		}
+		return null;
+	}
+
+	public Screen deleteScreen(long screenId) {
+		Screen screen = getScreenById(screenId);
+		if (screen != null) {
+			screenRepo.delete(screen);
+			return screen;
+		}
+		return null;
 	}
 }
