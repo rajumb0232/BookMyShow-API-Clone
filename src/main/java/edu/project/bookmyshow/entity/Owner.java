@@ -26,7 +26,7 @@ public class Owner {
 	private long ownerPhoneNumber;
 	@Email(regexp = "[a-zA-Z0-9+_.-]+@[a-zA-Z]+\\.[a-z]{2,3}", message = "invalid email ")
 	private String ownerEmail;
-	
+	@Pattern(regexp = "")
 	private String ownerPassword;
 	
 	@OneToMany(mappedBy = "owner")
