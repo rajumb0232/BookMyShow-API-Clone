@@ -123,15 +123,16 @@ public class TicketService {
 		responseStructure.setData(ticket);
 		return new ResponseEntity<ResponseStructure<Ticket>> (responseStructure, HttpStatus.CREATED);
 		
-		/**
-		 * create a method for scheduled job,
-		 * where this method will responsible to set the seatStatus to available
-		 * after exceeding the show time 
-		 * all the tickets related to the show should get expired.
-		 * if the show gets cancelled, the ticket status should also be cancelled
-		 * if they are active.*/
+		
 	}
 	
 	
+	/**
+	 * create a method for scheduled job,
+	 * where this method will responsible to set the seatStatus to available
+	 * after exceeding the show time 
+	 * all the tickets related to the show should get expired.
+	 * if the show gets cancelled, the ticket status should also be cancelled
+	 * if they are active.*/
 	
 }
