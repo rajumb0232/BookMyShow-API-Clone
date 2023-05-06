@@ -1,8 +1,6 @@
 package edu.project.bookmyshow.dto;
 
-import java.time.LocalTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class ShowDto {
 	private long showId;
-	@DateTimeFormat(style = "HH:mm")
-	private LocalTime showTime;
+	private LocalDateTime showStartTime;
+	private LocalDateTime showEndTime;
 
 	private double classicSeatPrice;
 	private double goldSeatPrice;

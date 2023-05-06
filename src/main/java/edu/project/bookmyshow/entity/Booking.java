@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import edu.project.bookmyshow.enums.SeatStatus;
 import edu.project.bookmyshow.enums.SeatType;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +20,6 @@ public class Booking {
 	
 	private long seatId;
 	private String seatNumber;
-	private SeatStatus seatStatus;
 	private SeatType seatType;
 	
 	private double seatPrice;

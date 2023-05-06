@@ -42,7 +42,6 @@ public class TicketService {
 	@Autowired
 	private SeatDao seatDao;
 	// create a bookingDao.
-	
 
 	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(TicketDto ticketDto, long customerId, long showId,
 			Long[] seatId) {
@@ -62,57 +61,57 @@ public class TicketService {
 		List<Booking> bookings = new ArrayList<>();
 		List<Seat> seats = new ArrayList<>();
 		double totalPrice = 0;
-		
-		/* iterating over for each seats and creating a booking for requested
-		 * seats, and setting the price */
+
+		/*
+		 * iterating over for each seats and creating a booking for requested seats, and
+		 * setting the price
+		 */
 		for (Long id : seatId) {
 			Seat seat = seatDao.getSeat(id);
 			if (seat != null) {
-				Booking booking = new Booking();
-				booking.setSeatId(seat.getSeatId());
-				booking.setSeatNumber(seat.getSeatNumber());
-				if (seat.getSeatStatus().equals(SeatStatus.BLOCKED)) {
-					throw new SeatTemporarilyBlockedException("Failed to book ticket!!");
-
+				if (seat.getSeatStatus().equals(SeatStatus.BOOKED)) {
+					throw new SeatAlreadyBookedException("Failed to book ticket");
 				} else {
-					if (seat.getSeatStatus().equals(SeatStatus.BOOKED)) {
-						throw new SeatAlreadyBookedException("Failed to book ticket");
+					Booking booking = new Booking();
+					booking.setSeatId(seat.getSeatId());
+					booking.setSeatNumber(seat.getSeatNumber());
+					if (seat.getSeatStatus().equals(SeatStatus.BLOCKED)) {
+						throw new SeatTemporarilyBlockedException("Failed to book ticket!!");
 					} else {
-						booking.setSeatStatus(SeatStatus.BOOKED);
+						booking.setSeatType(seat.getSeatType());
+						SeatType seatType = booking.getSeatType();
+
+						switch (seatType) {
+						case CLASSIC:
+							booking.setSeatPrice(show.getClassicSeatPrice());
+							totalPrice = show.getClassicSeatPrice();
+							break;
+
+						case GOLD:
+							booking.setSeatPrice(show.getGoldSeatPrice());
+							totalPrice = show.getGoldSeatPrice();
+							break;
+
+						case PREMIUM:
+							booking.setSeatPrice(show.getPremiumSeatPrice());
+							totalPrice = show.getPremiumSeatPrice();
+							break;
+						}
+
+						bookings.add(booking);
+						seats.add(seat);
 					}
+
 				}
-				booking.setSeatType(seat.getSeatType());
-				SeatType seatType = booking.getSeatType();
-				
-				switch (seatType) {
-				case CLASSIC:
-					booking.setSeatPrice(show.getClassicSeatPrice());
-					totalPrice = show.getClassicSeatPrice();
-					break;
-				
-				case GOLD:
-					booking.setSeatPrice(show.getGoldSeatPrice());
-					totalPrice = show.getGoldSeatPrice();
-					break;
-					
-				case PREMIUM:
-					booking.setSeatPrice(show.getPremiumSeatPrice());
-					totalPrice = show.getPremiumSeatPrice();
-					break;
-			}
-			
-				bookings.add(booking);
-				seats.add(seat);
+
+			} // save booking through bookingDao.
 		}
-			
-			// save booking through bookingDao.
-	}
 		ticket.setTicketStatus(TicketStatus.ACTIVE);
 		ticket.setTotalPrice(totalPrice);
 		ticket.setBookings(bookings);
 		ticket = ticketDao.bookTicket(ticket);
-		if(ticket!=null) {
-			for(Seat seat : seats) {
+		if (ticket != null) {
+			for (Seat seat : seats) {
 				seat.setSeatStatus(SeatStatus.BOOKED);
 				seatDao.updateSeat(seat);
 			}
@@ -121,18 +120,15 @@ public class TicketService {
 		responseStructure.setStatus(HttpStatus.CREATED.value());
 		responseStructure.setMessage("Ticket Booked Successfully.");
 		responseStructure.setData(ticket);
-		return new ResponseEntity<ResponseStructure<Ticket>> (responseStructure, HttpStatus.CREATED);
-		
-		
+		return new ResponseEntity<ResponseStructure<Ticket>>(responseStructure, HttpStatus.CREATED);
+
 	}
-	
-	
+
 	/**
-	 * create a method for scheduled job,
-	 * where this method will responsible to set the seatStatus to available
-	 * after exceeding the show time 
-	 * all the tickets related to the show should get expired.
-	 * if the show gets cancelled, the ticket status should also be cancelled
-	 * if they are active.*/
-	
+	 * create a method for scheduled job, where this method will responsible to set
+	 * the seatStatus to available after exceeding the show time all the tickets
+	 * related to the show should get expired. if the show gets cancelled, the
+	 * ticket status should also be cancelled if they are active.
+	 */
+
 }

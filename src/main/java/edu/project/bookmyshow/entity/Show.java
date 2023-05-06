@@ -1,5 +1,6 @@
 package edu.project.bookmyshow.entity;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import javax.persistence.Entity;
@@ -23,8 +24,10 @@ public class Show {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long showId;
-	private LocalTime showTime;
+	private LocalDateTime showStartTime;
+	private LocalDateTime showEndTime;
 	private ShowStatus showStatus;
+	private String showLocation;
 	
 	private long movieId;
 	private String movieNaame;

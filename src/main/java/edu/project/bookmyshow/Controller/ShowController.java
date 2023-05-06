@@ -36,4 +36,9 @@ public class ShowController {
 	public ResponseEntity<ResponseStructure<Show>> updateShow(@RequestParam long showId, @RequestBody ShowDto showDto, @RequestParam long movieId, @RequestParam long screenId){
 		return showService.updadeShow(showId, showDto, screenId, movieId);
 	}
+	
+	@PutMapping("/cancel")
+	public ResponseEntity<ResponseStructure<Show>> cancelShow(@RequestParam long showId){
+		return showService.cancelShow(showId);
+	}
 }
