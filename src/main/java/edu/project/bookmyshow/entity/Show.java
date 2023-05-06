@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import edu.project.bookmyshow.enums.Genre;
-import edu.project.bookmyshow.enums.ScreenAvailability;
 import edu.project.bookmyshow.enums.ShowStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +33,6 @@ public class Show {
 	
 	private long screenId;
 	private String screenname;
-	private ScreenAvailability screenAvailability;
 	private double classicSeatPrice;
 	private double goldSeatPrice;
 	private double premiumSeatPrice;
@@ -42,5 +40,6 @@ public class Show {
 	@ManyToOne 
 	@JoinColumn
 	private Theatre theatre;
+
 	
 }

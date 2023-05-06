@@ -12,7 +12,9 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import edu.project.bookmyshow.enums.ScreenAvailability;
 import edu.project.bookmyshow.enums.ScreenType;
+import edu.project.bookmyshow.enums.Screenstatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +28,8 @@ public class Screen {
 	private long screenId;
 	private String screenName;
 	private ScreenType screenType;
+	private ScreenAvailability screenAvailability;
+	private Screenstatus screenstatus;
 	
 	@OneToMany(mappedBy = "screen")
 	List<Seat> seats;

@@ -31,6 +31,8 @@ public class ScreenDao {
 		Optional<Screen> optional = screenRepo.findById(screenId);
 		if (optional.isPresent()) {
 			screen.setScreenId(screenId);
+			screen.setSeats(optional.get().getSeats());
+			screen.setTheatre(optional.get().getTheatre());
 			return screenRepo.save(screen);
 		}
 		return null;

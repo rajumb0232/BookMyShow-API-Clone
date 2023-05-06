@@ -23,7 +23,7 @@ public class TicketController {
 	
 	
 	@PostMapping
-	public ResponseEntity<ResponseStructure<Ticket>> addTicket(@RequestBody TicketDto ticketDto,
+	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(@RequestBody TicketDto ticketDto,
 			@RequestParam long customerId, @RequestParam long showId, @RequestParam Long[] seatId){
 		return ticketService.bookTicket(ticketDto, customerId, showId, seatId);
 	}
