@@ -56,7 +56,7 @@ public class ShowService {
 			 * checking if the show run time fits in between the previous and next show
 			 */
 			List<Show> shows = showDao.getShowsIfPresentBetween(show.getShowStartTime(), show.getShowEndTime());
-			if (shows.size() > 0) {
+			if (shows.size()==0) {
 				Movie movie = movieDao.getMovie(movieId);
 				if (movie != null) {
 					show.setMovieId(movieId);
