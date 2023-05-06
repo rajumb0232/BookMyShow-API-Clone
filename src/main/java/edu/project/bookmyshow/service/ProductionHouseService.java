@@ -27,7 +27,9 @@ public class ProductionHouseService {
 	public ResponseEntity<ResponseStructure<ProductionHouse>> saveProductionHouse(long ownerId,ProductionHouseDto houseDto){
 		Owner owner=ownerDao.getOwnerById(ownerId);
 
-		ProductionHouse house =(ProductionHouse)this.modelMapper.map(houseDto, ProductionHouse.class);
+		ProductionHouse house =new ProductionHouse();
+		house.setEstablishment(houseDto.getEstablishment());
+		house.setProductionName(houseDto.getProductionName());
 		if(owner!=null) {
 		   	ResponseStructure<ProductionHouse> structure = new ResponseStructure<>();
             house.setOwner(owner);
