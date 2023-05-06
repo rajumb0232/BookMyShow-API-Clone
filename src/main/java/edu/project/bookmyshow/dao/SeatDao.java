@@ -38,7 +38,8 @@ public class SeatDao {
 		}else {
 			return optional.get();
 		}
-    
+	}
+	
 	public Seat addSeat(Seat seat) {
 		return seatRepo.save(seat);
 		
