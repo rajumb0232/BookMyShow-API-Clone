@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.project.bookmyshow.enums.Genre;
 import edu.project.bookmyshow.enums.ShowStatus;
 import lombok.Getter;
@@ -39,6 +41,7 @@ public class Show {
 	
 	@ManyToOne 
 	@JoinColumn
+	@JsonIgnore
 	private Theatre theatre;
 
 	

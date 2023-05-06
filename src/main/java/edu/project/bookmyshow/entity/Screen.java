@@ -32,7 +32,7 @@ public class Screen {
 	private Screenstatus screenstatus;
 	
 	@OneToMany(mappedBy = "screen")
-	List<Seat> seats;
+	private List<Seat> seats;
 	
 	private int numberOfClassicSeat;
 	private int numberOfGoldSeat;
