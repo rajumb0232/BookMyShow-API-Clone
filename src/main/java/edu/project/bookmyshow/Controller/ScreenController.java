@@ -24,6 +24,7 @@ public class ScreenController {
 
 	@Autowired
 	private ScreenService screenService;
+
 	@ApiOperation(value = "Save Screen", notes = " Api is used to save the Screen")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Screen not found for the given  id") })
@@ -32,6 +33,7 @@ public class ScreenController {
 			@RequestBody ScreenDto screenDto) {
 		return screenService.saveScreen(theatreId, screenDto);
 	}
+
 	@ApiOperation(value = "Update Screen", notes = " Api is used to update the Screen")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "Screen not found for the given  id") })
@@ -40,6 +42,7 @@ public class ScreenController {
 			@RequestBody ScreenDto screenDto) {
 		return screenService.updateScreen(screenId, screenDto);
 	}
+
 	@ApiOperation(value = "Delete Screen", notes = " Api is used to delete the Screen")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully deleted"),
 			@ApiResponse(code = 404, message = "Screen not found for the given  id") })
@@ -47,11 +50,12 @@ public class ScreenController {
 	public ResponseEntity<ResponseStructure<ScreenDto>> deleteScreen(@RequestParam long screenId) {
 		return screenService.deleteScreen(screenId);
 	}
+
 	@ApiOperation(value = "Find Screen", notes = " Api is used to find the Screen")
 	@ApiResponses(value = { @ApiResponse(code = 302, message = "Successfully fetched"),
 			@ApiResponse(code = 404, message = "Screen not found for the given  id") })
 	@GetMapping
-	public ResponseEntity<ResponseStructure<ScreenDto>>getScreen(@RequestParam long screenId){
+	public ResponseEntity<ResponseStructure<ScreenDto>> getScreen(@RequestParam long screenId) {
 		return screenService.getScreenById(screenId);
 	}
 }

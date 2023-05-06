@@ -22,7 +22,7 @@ public class ApplicationConfig {
 	
 		@SuppressWarnings("rawtypes")
 		public Docket getDocket() {
-			Contact contact = new Contact("Raju mb", null, "rajugowda0212@gmail.com");
+			Contact contact = new Contact("TYSS Team", null, "rajugowda0212@gmail.com");
 			List<VendorExtension> extensions = new ArrayList<>();
 			ApiInfo apiInfo = new ApiInfo("Shopping App - Angadi API",
 					

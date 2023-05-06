@@ -1,10 +1,13 @@
 package edu.project.bookmyshow.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import edu.project.bookmyshow.entity.Show;
 import edu.project.bookmyshow.entity.Theatre;
 import edu.project.bookmyshow.repository.TheatreRepo;
 
@@ -28,7 +31,10 @@ public class TheaterDao {
 	public Theatre deleteTheatre(long theatreId) {
 		Optional<Theatre> optional=repo.findById(theatreId);
 		if(optional.isPresent()) {
+		
 			Theatre theatre=optional.get();
+			theatre.setScreens(null);
+			theatre.setShows(null);
 			 repo.delete(theatre);
 			 return optional.get();
 		}
