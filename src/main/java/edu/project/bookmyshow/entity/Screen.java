@@ -2,6 +2,7 @@ package edu.project.bookmyshow.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,7 +28,8 @@ public class Screen {
 	private String screenName;
 	private ScreenType screenType;
 	
-	@OneToMany(mappedBy = "screen")
+	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Seat> seats;
 	
 	private int numberOfClassicSeat;

@@ -63,7 +63,6 @@ public class TicketService {
 			if (seat != null) {
 				Booking booking = new Booking();
 				booking.setSeatId(seat.getSeatId());
-				booking.setSeatNumber(seat.getSeatNumber());
 				if (seat.getSeatStatus().equals(SeatStatus.BLOCKED)) {
 					throw new SeatTemporarilyBlockedException("Failed to book ticket!!");
 

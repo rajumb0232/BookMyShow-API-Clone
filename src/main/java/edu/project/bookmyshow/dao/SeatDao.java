@@ -26,4 +26,9 @@ public class SeatDao {
 	public void updateSeat(Seat seat) {
 		seatRepo.save(seat);
 	}
+
+	public Seat addSeat(Seat seat) {
+		return seatRepo.save(seat);
+		
+	}
 }
