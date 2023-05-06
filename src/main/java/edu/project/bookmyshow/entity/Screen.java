@@ -14,7 +14,9 @@ import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import edu.project.bookmyshow.enums.ScreenAvailability;
 import edu.project.bookmyshow.enums.ScreenType;
+import edu.project.bookmyshow.enums.Screenstatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +32,8 @@ public class Screen {
 	private String screenName;
 	@Pattern(regexp = "[A-Z]{1}[a-z]*")
 	private ScreenType screenType;
+	private ScreenAvailability screenAvailability;
+	private Screenstatus screenstatus;
 	
 	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
 	@JsonIgnore

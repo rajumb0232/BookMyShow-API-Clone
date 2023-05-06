@@ -8,14 +8,11 @@ import org.springframework.stereotype.Service;
 
 import edu.project.bookmyshow.dao.OwnerDao;
 import edu.project.bookmyshow.dao.ProductionHouseDao;
-
 import edu.project.bookmyshow.dto.ProductionHouseDto;
-
 import edu.project.bookmyshow.entity.Owner;
 import edu.project.bookmyshow.entity.ProductionHouse;
 import edu.project.bookmyshow.exception.OwnerNotFoundByIdException;
 import edu.project.bookmyshow.exception.ProductionNotFoundByIdException;
-import edu.project.bookmyshow.exception.ScreenNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -30,7 +27,9 @@ public class ProductionHouseService {
 	public ResponseEntity<ResponseStructure<ProductionHouse>> saveProductionHouse(long ownerId,ProductionHouseDto houseDto){
 		Owner owner=ownerDao.getOwnerById(ownerId);
 
-		ProductionHouse house =(ProductionHouse)this.modelMapper.map(houseDto, ProductionHouse.class);
+		ProductionHouse house =new ProductionHouse();
+		house.setEstablishment(houseDto.getEstablishment());
+		house.setProductionName(houseDto.getProductionName());
 		if(owner!=null) {
 		   	ResponseStructure<ProductionHouse> structure = new ResponseStructure<>();
             house.setOwner(owner);

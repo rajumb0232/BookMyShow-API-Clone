@@ -3,7 +3,6 @@ package edu.project.bookmyshow.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +31,7 @@ public class Customer {
 	private String customerEmail;
 	@Pattern(regexp = "(?=.*[0-9])+(?=.*[a-z])+(?=.*[A-Z])+(?=.*[@#$%^&+=])+(?=\\S+$).{8}", message = "8 characters mandatory(1 upperCase,1 lowerCase,1 specialCharacter,1 number)")
 	private String customerPassword;
-	
+
 	@OneToMany(mappedBy = "customer")
 	private List<Ticket> tickets;
 }

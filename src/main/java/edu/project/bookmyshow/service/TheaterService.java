@@ -61,7 +61,6 @@ public class TheaterService {
 	}
 	
 	public ResponseEntity<ResponseStructure<Theatre>> deleteTheatre(long theaterId){
-		 Theatre theatre=new Theatre();
 		Theatre theatre1=dao.deleteTheatre(theaterId);
 		if(theatre1!=null) {
 			ResponseStructure<Theatre> structure = new ResponseStructure<Theatre>();
@@ -72,6 +71,20 @@ public class TheaterService {
 		}else {
 //			theatre id not found
 			throw new TheaterNotFoundByIdException("Failed to delete Theatre!!");
+		}
+	}
+	
+	public ResponseEntity<ResponseStructure<Theatre>> findTheatre(long theaterId){
+		Theatre theatre1=dao.getTheatreById(theaterId);
+		if(theatre1!=null) {
+			ResponseStructure<Theatre> structure = new ResponseStructure<Theatre>();
+			structure.setMessage("Theatre fetched successfully");
+			structure.setStatus(HttpStatus.FOUND.value());
+			structure.setData(theatre1);
+			return new ResponseEntity<ResponseStructure<Theatre>>(structure, HttpStatus.FOUND);
+		}else {
+//			
+			throw new TheaterNotFoundByIdException("Failed to fetch Theatre!!");
 		}
 	}
 }

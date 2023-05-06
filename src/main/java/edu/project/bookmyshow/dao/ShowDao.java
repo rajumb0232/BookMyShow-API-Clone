@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.dao;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +27,18 @@ public class ShowDao {
 		}else {
 			return optional.get();
 		}
+	}
+
+	public List<Show> getShowsIfPresentBetween(LocalDateTime showStartTime, LocalDateTime showEndTime) {
+		Optional<List<Show>> optional = showRepo.getShowsIfPresentBetween(showStartTime, showEndTime);
+		if(optional.isEmpty()) {
+			return null;
+		}else {
+			return optional.get();
+		}
+	}
+
+	public Show cancelShow(Show show) {
+		return showRepo.save(show);
 	}
 }
