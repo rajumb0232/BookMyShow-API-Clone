@@ -22,7 +22,7 @@ public class Owner {
 	private String ownerName;
 	private long ownerPhoneNumber;
 	private String ownerEmail;
-	
+	@Pattern(regexp = "")
 	private String ownerPassword;
 	
 	@OneToMany(mappedBy = "owner")
