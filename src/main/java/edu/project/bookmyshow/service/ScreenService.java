@@ -1,5 +1,8 @@
 package edu.project.bookmyshow.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,10 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import edu.project.bookmyshow.dao.ScreenDao;
+import edu.project.bookmyshow.dao.SeatDao;
 import edu.project.bookmyshow.dao.TheaterDao;
 import edu.project.bookmyshow.dto.ScreenDto;
 import edu.project.bookmyshow.entity.Screen;
+import edu.project.bookmyshow.entity.Seat;
 import edu.project.bookmyshow.entity.Theatre;
+import edu.project.bookmyshow.enums.SeatStatus;
+import edu.project.bookmyshow.enums.SeatType;
 import edu.project.bookmyshow.exception.ScreenNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
@@ -26,11 +33,38 @@ public class ScreenService {
 	@Autowired
 	private TheaterDao theaterDao;
 
+	@Autowired
+	private SeatDao seatDao;
+
 	public ResponseEntity<ResponseStructure<ScreenDto>> saveScreen(long theatreId, ScreenDto screenDto) {
 		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();
 		Theatre theatre = theaterDao.getTheatreById(theatreId);
 		if (theatre != null) {
 			Screen screen = (Screen) this.modelMapper.map(screenDto, Screen.class);
+			List<Seat> seats = new ArrayList<>();
+
+			for (int c = screen.getNumberOfClassicSeat(); c > 0; c--) {
+				Seat seat = new Seat();
+				seat.setSeatStatus(SeatStatus.AVAILABLE);
+				seat.setSeatType(SeatType.CLASSIC);
+				seat.setScreen(screen);
+				seats.add(seat);
+			}
+			for (int g = screen.getNumberOfGoldSeat(); g > 0; g--) {
+				Seat seat = new Seat();
+				seat.setSeatStatus(SeatStatus.AVAILABLE);
+				seat.setSeatType(SeatType.GOLD);
+				seat.setScreen(screen);
+				seats.add(seat);
+			}
+			for (int p = screen.getNumberOfPlatinumSeat(); p > 0; p--) {
+				Seat seat = new Seat();
+				seat.setSeatStatus(SeatStatus.AVAILABLE);
+				seat.setSeatType(SeatType.PREMIUM);
+				seat.setScreen(screen);
+				seats.add(seat);
+			}
+			screen.setSeats(seats);
 			screen.setTheatre(theatre);
 			screen = screenDao.saveScreen(screen);
 			theaterDao.updateTheatre(theatreId, theatre);
@@ -40,7 +74,6 @@ public class ScreenService {
 			return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.CREATED);
 		}
 		throw new ScreenNotFoundByIdException("Failed to add Screen!!");
-// SharathVeda
 	}
 
 	public ResponseEntity<ResponseStructure<ScreenDto>> updateScreen(long screenId, ScreenDto screenDto) {

@@ -20,6 +20,7 @@ public class Booking {
 	private long bookingId;
 	
 	private long seatId;
+	
 	private String seatNumber;
 	private SeatStatus seatStatus;
 	private SeatType seatType;
