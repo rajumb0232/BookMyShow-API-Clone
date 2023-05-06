@@ -28,8 +28,9 @@ public class TicketController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Ticket not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<Ticket>> addTicket(@RequestBody TicketDto ticketDto,
-			@RequestParam long customerId, @RequestParam long showId, @RequestParam Long[] seatId) {
+	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(@RequestBody TicketDto ticketDto,
+			@RequestParam long customerId, @RequestParam long showId, @RequestParam Long[] seatId){
+
 		return ticketService.bookTicket(ticketDto, customerId, showId, seatId);
 	}
 
