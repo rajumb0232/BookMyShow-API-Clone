@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.project.bookmyshow.dao.AddressDao;
 import edu.project.bookmyshow.dto.AddressDto;
+import edu.project.bookmyshow.entity.Address;
+import edu.project.bookmyshow.entity.Theatre;
 import edu.project.bookmyshow.service.AddressService;
 import edu.project.bookmyshow.util.ResponseStructure;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +27,6 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/address")
 public class AddressController {
 
-
 	@Autowired
 	private AddressService addressService;
 
@@ -30,8 +34,9 @@ public class AddressController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Address not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<AddressDto>> saveAddress(@RequestBody AddressDto addressDto,@RequestParam long theatreId) {
-		return addressService.saveAddress(addressDto,theatreId);
+	public ResponseEntity<ResponseStructure<AddressDto>> saveAddress(@RequestBody AddressDto addressDto,
+			@RequestParam long theatreId) {
+		return addressService.saveAddress(addressDto, theatreId);
 	}
 
 	@ApiOperation(value = "Delete Address", notes = " Api is used to delete the address")

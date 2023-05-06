@@ -25,6 +25,7 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerService customerService;
+
 	@ApiOperation(value = "Save Customer", notes = " Api is used to save the Customer")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Customer not found for the given id") })
@@ -32,6 +33,7 @@ public class CustomerController {
 	public ResponseEntity<ResponseStructure<CustomerDto>> saveCustomer(@RequestBody Customer customer) {
 		return customerService.saveCustomer(customer);
 	}
+
 	@ApiOperation(value = "Delete Customer", notes = " Api is used to delete the Customer")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully deleted"),
 			@ApiResponse(code = 404, message = "Customer not found for the given  id") })
@@ -39,6 +41,7 @@ public class CustomerController {
 	public ResponseEntity<ResponseStructure<CustomerDto>> deleteCustomer(@RequestParam long customerId) {
 		return customerService.deleteCustomer(customerId);
 	}
+
 	@ApiOperation(value = "Find Customer", notes = " Api is used to find the Customer")
 	@ApiResponses(value = { @ApiResponse(code = 302, message = "Successfully fetched"),
 			@ApiResponse(code = 404, message = "Customer not found for the given  id") })
@@ -46,6 +49,7 @@ public class CustomerController {
 	public ResponseEntity<ResponseStructure<CustomerDto>> getCustomer(@RequestParam long customerId) {
 		return customerService.getCustomerById(customerId);
 	}
+
 	@ApiOperation(value = "Update Customer", notes = " Api is used to update the Customer")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "Customer not found for the given  id") })
