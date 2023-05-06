@@ -19,6 +19,7 @@ import edu.project.bookmyshow.entity.Theatre;
 import edu.project.bookmyshow.enums.SeatStatus;
 import edu.project.bookmyshow.enums.SeatType;
 import edu.project.bookmyshow.exception.ScreenNotFoundByIdException;
+import edu.project.bookmyshow.exception.TheaterNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -73,7 +74,7 @@ public class ScreenService {
 			responseStructure.setData(screen);
 			return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.CREATED);
 		}
-		throw new ScreenNotFoundByIdException("Failed to add Screen!!");
+		throw new TheaterNotFoundByIdException("Failed to add Theater!!");
 	}
 
 	public ResponseEntity<ResponseStructure<ScreenDto>> updateScreen(long screenId, ScreenDto screenDto) {

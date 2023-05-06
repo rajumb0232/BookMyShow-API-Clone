@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
 import lombok.Getter;
@@ -21,12 +23,14 @@ public class Owner {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ownerId;
+	@Pattern(regexp = "[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*", message = "Start with capital letter and should not give space in begining and last")
 	private String ownerName;
-	//@Pattern(regexp = "[6,9][0-9]{9}", message = "invalid mobile number")
+	@Min(6000000000l)
+	@Max(9999999999l)
 	private long ownerPhoneNumber;
-	@Email(regexp = "[a-zA-Z0-9+_.-]+@[a-zA-Z]+\\.[a-z]{2,3}", message = "invalid email ")
+	@Email(regexp = "[a-zA-Z0-9+_.-]+@[gmail]+.[com]{3}", message = "invalid email--Should be in the extension of 'gmail.com' ")
 	private String ownerEmail;
-	@Pattern(regexp = "")
+	@Pattern(regexp = "^(?=.*[0-9])+(?=.*[a-z])+(?=.*[A-Z])+(?=.*[@#$%^&+=])+(?=\\S+$).{8}$", message = "8 characters mandatory(1 upperCase,1 lowerCase,1 special Character,1 number)")
 	private String ownerPassword;
 	
 	@OneToMany(mappedBy = "owner")

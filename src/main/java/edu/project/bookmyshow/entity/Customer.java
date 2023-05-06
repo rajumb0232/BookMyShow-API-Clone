@@ -8,6 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,9 +23,14 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long customerId;
+	@Pattern(regexp = "[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*", message = "Start with capital letter and should not give space in begining and last")
 	private String customerName;
+	@Min(6000000000l)
+	@Max(9999999999l)
 	private long customrPhoneNumber;
+	@Email(regexp = "[a-zA-Z0-9+_.-]+@[gmail]+.[com]{3}", message = "invalid email--Should be in the extension of 'gmail.com' ")
 	private String customerEmail;
+	@Pattern(regexp = "(?=.*[0-9])+(?=.*[a-z])+(?=.*[A-Z])+(?=.*[@#$%^&+=])+(?=\\S+$).{8}", message = "8 characters mandatory(1 upperCase,1 lowerCase,1 specialCharacter,1 number)")
 	private String customerPassword;
 	
 	@OneToMany(mappedBy = "customer")

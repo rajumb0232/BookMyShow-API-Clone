@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,7 +26,9 @@ public class Screen {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long screenId;
+	@Pattern(regexp = "[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*", message = "Start with capital letter and should not give space in begining and last")
 	private String screenName;
+	@Pattern(regexp = "[A-Z]{1}[a-z]*")
 	private ScreenType screenType;
 	
 	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
