@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import edu.project.bookmyshow.dto.TheatreDto;
 import edu.project.bookmyshow.entity.Theatre;
 import edu.project.bookmyshow.repository.TheatreRepo;
 

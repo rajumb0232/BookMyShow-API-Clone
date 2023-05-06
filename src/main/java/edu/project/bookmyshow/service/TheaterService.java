@@ -61,7 +61,6 @@ public class TheaterService {
 	}
 	
 	public ResponseEntity<ResponseStructure<Theatre>> deleteTheatre(long theaterId){
-		 Theatre theatre=new Theatre();
 		Theatre theatre1=dao.deleteTheatre(theaterId);
 		if(theatre1!=null) {
 			ResponseStructure<Theatre> structure = new ResponseStructure<Theatre>();

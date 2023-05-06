@@ -32,6 +32,7 @@ public class ScreenDao {
 		if (optional.isPresent()) {
 			
 			screen.setScreenId(screenId);
+			screen.setSeats(optional.get().getSeats());
 			screen.setTheatre(optional.get().getTheatre());
 			return screenRepo.save(screen);
 		}
@@ -45,5 +46,9 @@ public class ScreenDao {
 			return screen;
 		}
 		return null;
+	}
+
+	public Screen cancelShow(Screen screen) {
+		return screenRepo.save(screen);
 	}
 }
