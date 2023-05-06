@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import edu.project.bookmyshow.enums.SeatType;
 import lombok.Getter;
@@ -20,8 +22,7 @@ public class Booking {
 	
 	private long seatId;
 	
-	private String seatNumber;
 	private SeatType seatType;
-	
+
 	private double seatPrice;
 }

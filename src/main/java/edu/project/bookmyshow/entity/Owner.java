@@ -24,7 +24,7 @@ public class Owner {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ownerId;
-	@Pattern(regexp = "[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*", message = "Start with capital letter and should not give space in begining and last")
+	@Pattern(regexp = "[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*", message = "Name should start with capital letter and should not be given space in the begining and last")
 	private String ownerName;
 	@Min(6000000000l)
 	@Max(9999999999l)

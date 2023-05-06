@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
 import edu.project.bookmyshow.enums.TicketStatus;
@@ -25,10 +23,8 @@ public class Ticket {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ticketId;
-	@Min(1)
-	@Max(99999)
 	private double totalPrice;
-	@Pattern(regexp = "[A-Z]{1}[a-z]*")
+	@Pattern(regexp = "[A-Z]{1}[a-z]*",message = "Name should start with Capital Letter")
 	private TicketStatus ticketStatus;
 	
 	@ManyToOne

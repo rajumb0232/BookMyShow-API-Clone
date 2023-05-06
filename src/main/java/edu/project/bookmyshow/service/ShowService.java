@@ -62,7 +62,7 @@ public class ShowService {
 					show.setMovieId(movieId);
 					show.setGenre(movie.getGenre1());
 					show.setLanguage(movie.getLanguage());
-					show.setMovieNaame(movie.getMovieName());
+					show.setMovieName(movie.getMovieName());
 					show.setMovieDuration(movie.getMovieDuration());
 					show.setMovieDescription(movie.getMovieDescription());
 				} else {
@@ -71,7 +71,7 @@ public class ShowService {
 				Screen screen = screenDao.getScreenById(screenId);
 				if (screen != null) {
 					show.setScreenId(screenId);
-					show.setScreenname(screen.getScreenName());
+					show.setScreenName(screen.getScreenName());
 					show.setTheatre(screen.getTheatre());
 					show.setShowLocation(screen.getTheatre().getAddress().getCity());
 					screen.setScreenAvailability(ScreenAvailability.ALLOTTED);
@@ -139,14 +139,14 @@ public class ShowService {
 							show.setMovieId(movieId);
 							show.setGenre(movie.getGenre1());
 							show.setLanguage(movie.getLanguage());
-							show.setMovieNaame(movie.getMovieName());
+							show.setMovieName(movie.getMovieName());
 							show.setMovieDuration(movie.getMovieDuration());
 							show.setMovieDescription(movie.getMovieDescription());
 						} else {
 							throw new MovieNotFoundByIdException("Failed to update Show!!");
 						}
 						show.setScreenId(screenId);
-						show.setScreenname(screen.getScreenName());
+						show.setScreenName(screen.getScreenName());
 						show.setTheatre(screen.getTheatre());
 						show.setShowLocation(screen.getTheatre().getAddress().getCity());
 					}

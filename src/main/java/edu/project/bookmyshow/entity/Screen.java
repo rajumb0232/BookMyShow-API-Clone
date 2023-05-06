@@ -30,7 +30,7 @@ public class Screen {
 	private long screenId;
 	@Pattern(regexp = "[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*", message = "Start with capital letter and should not give space in begining and last")
 	private String screenName;
-	@Pattern(regexp = "[A-Z]{1}[a-z]*")
+	@Pattern(regexp = "[A-Z]{1}[a-z]*",message = "Name should start with Capital Letter")
 	private ScreenType screenType;
 	private ScreenAvailability screenAvailability;
 	private Screenstatus screenstatus;
