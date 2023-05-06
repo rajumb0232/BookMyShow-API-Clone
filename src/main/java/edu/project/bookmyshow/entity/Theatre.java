@@ -32,7 +32,7 @@ public class Theatre {
 	private Address address;
 	
 	@OneToMany(mappedBy = "theatre")
-	@JsonIgnore
+	//@JsonIgnore
 	private List<Screen> screens;
 	
 	@ManyToOne 
@@ -41,7 +41,7 @@ public class Theatre {
 	private Owner owner;
 	
 	@OneToMany(mappedBy = "theatre")
-	@JsonIgnore
+
 	private List<Show> shows;
 
 }

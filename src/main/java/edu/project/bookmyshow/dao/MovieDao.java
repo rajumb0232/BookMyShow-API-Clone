@@ -26,4 +26,20 @@ public class MovieDao {
 			return optional.get();
 		}
 	}
+	public Movie updateMovie(long movieId,Movie movie) {
+		Optional<Movie> optional = movieRepo.findById(movieId);
+		if(optional.isPresent()) {
+			movie.setMovieId(movieId);
+			return movieRepo.save(movie);			
+		}
+		return null;
+	}
+	public Movie deleteMovie(long movieId) {
+		Optional<Movie> optional = movieRepo.findById(movieId);
+		if(optional.isPresent()) {
+			movieRepo.delete(optional.get());
+			return optional.get();
+		}
+	    return null;
+	}
 }

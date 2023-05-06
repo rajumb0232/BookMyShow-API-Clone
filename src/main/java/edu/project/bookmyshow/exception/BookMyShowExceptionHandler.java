@@ -90,6 +90,7 @@ public class BookMyShowExceptionHandler {
 		structure.setData("ProductionHouse not found with the requested Id!!");
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
 	}
+	
 	@ExceptionHandler
 	public ResponseEntity<ResponseStructure<String>> TheaterHouseNotFoundById(TheaterNotFoundByIdException ex){
 		ResponseStructure<String> structure = new ResponseStructure<>();
@@ -100,4 +101,12 @@ public class BookMyShowExceptionHandler {
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> TicketsAlreadyBooked(TicketsAlreadyBookedException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Cannot update the show tickets already booked!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
 }

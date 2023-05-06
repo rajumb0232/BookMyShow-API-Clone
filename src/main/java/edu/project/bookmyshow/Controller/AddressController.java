@@ -19,6 +19,7 @@ import edu.project.bookmyshow.util.ResponseStructure;
 @RequestMapping("/address")
 public class AddressController {
 
+
 	@Autowired
 	private AddressService addressService;
 
@@ -42,4 +43,5 @@ public class AddressController {
 	public ResponseEntity<ResponseStructure<AddressDto>> getAddressById(@RequestParam long addressId) {
 		return addressService.getAddressById(addressId);
 	}
+
 }

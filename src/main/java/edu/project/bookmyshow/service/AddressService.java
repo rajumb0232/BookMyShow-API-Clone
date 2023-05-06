@@ -30,11 +30,11 @@ public class AddressService {
 	public ResponseEntity<ResponseStructure<AddressDto>> saveAddress(AddressDto addressDto, long theatreId) {
 		ResponseStructure<AddressDto> responseStructure = new ResponseStructure<>();
 		Theatre theatre = theaterDao.getTheatreById(theatreId);
-		if(theatre!=null) {
+		if (theatre != null) {
 			Address address = (Address) this.modelMapper.map(addressDto, Address.class);
-			address = addressDao.saveAddress(address);
 			if (address != null) {
 				theatre.setAddress(address);
+				address = addressDao.saveAddress(address);
 				theaterDao.updateTheatre(theatreId, theatre);
 				responseStructure.setMessage("address saved successfully");
 				responseStructure.setStatus(HttpStatus.CREATED.value());
@@ -42,10 +42,9 @@ public class AddressService {
 				return new ResponseEntity<ResponseStructure<AddressDto>>(responseStructure, HttpStatus.CREATED);
 			}
 			throw new AddressNotFoundByIdException("Failed to add Address!!");
-		}else {
+		} else {
 			throw new TheaterNotFoundByIdException("Failed to add Address!!");
 		}
-		
 	}
 
 	public ResponseEntity<ResponseStructure<AddressDto>> deleteAddress(long addressId) {

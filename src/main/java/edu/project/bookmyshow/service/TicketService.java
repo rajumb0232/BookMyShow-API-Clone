@@ -21,6 +21,7 @@ import edu.project.bookmyshow.entity.Show;
 import edu.project.bookmyshow.entity.Ticket;
 import edu.project.bookmyshow.enums.SeatStatus;
 import edu.project.bookmyshow.enums.SeatType;
+import edu.project.bookmyshow.enums.TicketStatus;
 import edu.project.bookmyshow.exception.CustomerNotFoundByIdException;
 import edu.project.bookmyshow.exception.SeatAlreadyBookedException;
 import edu.project.bookmyshow.exception.SeatTemporarilyBlockedException;
@@ -40,6 +41,8 @@ public class TicketService {
 	private ShowDao showDao;
 	@Autowired
 	private SeatDao seatDao;
+	// create a bookingDao.
+	
 
 	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(TicketDto ticketDto, long customerId, long showId,
 			Long[] seatId) {
@@ -58,6 +61,10 @@ public class TicketService {
 		}
 		List<Booking> bookings = new ArrayList<>();
 		List<Seat> seats = new ArrayList<>();
+		double totalPrice = 0;
+		
+		/* iterating over for each seats and creating a booking for requested
+		 * seats, and setting the price */
 		for (Long id : seatId) {
 			Seat seat = seatDao.getSeat(id);
 			if (seat != null) {
@@ -80,14 +87,17 @@ public class TicketService {
 				switch (seatType) {
 				case CLASSIC:
 					booking.setSeatPrice(show.getClassicSeatPrice());
+					totalPrice = show.getClassicSeatPrice();
 					break;
 				
 				case GOLD:
 					booking.setSeatPrice(show.getGoldSeatPrice());
+					totalPrice = show.getGoldSeatPrice();
 					break;
 					
 				case PREMIUM:
 					booking.setSeatPrice(show.getPremiumSeatPrice());
+					totalPrice = show.getPremiumSeatPrice();
 					break;
 			}
 			
@@ -95,7 +105,10 @@ public class TicketService {
 				seats.add(seat);
 		}
 			
+			// save booking through bookingDao.
 	}
+		ticket.setTicketStatus(TicketStatus.ACTIVE);
+		ticket.setTotalPrice(totalPrice);
 		ticket.setBookings(bookings);
 		ticket = ticketDao.bookTicket(ticket);
 		if(ticket!=null) {
@@ -110,12 +123,16 @@ public class TicketService {
 		responseStructure.setData(ticket);
 		return new ResponseEntity<ResponseStructure<Ticket>> (responseStructure, HttpStatus.CREATED);
 		
-		/**
-		 * create a method for scheduled job,
-		 * where this method will responsible to set the seatStatus to available
-		 * after exceeding the show time */
+		
 	}
 	
 	
+	/**
+	 * create a method for scheduled job,
+	 * where this method will responsible to set the seatStatus to available
+	 * after exceeding the show time 
+	 * all the tickets related to the show should get expired.
+	 * if the show gets cancelled, the ticket status should also be cancelled
+	 * if they are active.*/
 	
 }

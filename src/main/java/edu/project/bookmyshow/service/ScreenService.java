@@ -29,31 +29,54 @@ public class ScreenService {
 	public ResponseEntity<ResponseStructure<ScreenDto>> saveScreen(long theatreId, ScreenDto screenDto) {
 		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();
 		Theatre theatre = theaterDao.getTheatreById(theatreId);
-	//	System.out.println(screenDto.getScreenName());
 		if (theatre != null) {
 			Screen screen = (Screen) this.modelMapper.map(screenDto, Screen.class);
-//			Screen screen =new Screen();
-//		
-//			screen.setScreenName(screenDto.getScreenName());
-//			screen.setScreenType(screenDto.getScreenType());
-//			screen.setNumberOfClassicSeat(screenDto.getNumberOfClassicSeat());
-//			screen.setNumberOfGoldSeat(screenDto.getNumberOfGoldSeat());
-//			screen.setNumberOfPlatinumSeat(screen.getNumberOfPlatinumSeat());
-			//	System.out.println(screen.getScreenName());
-//				List<Screen> list = new ArrayList<>();
-//				list.add(screen);
-//				list.addAll(theatre.getScreens());
-				theatre.getScreens().add(screen);
-				screen.setTheatre(theatre);
-				screen = screenDao.saveScreen(screen);
-				theaterDao.updateTheatre(theatreId, theatre);
-				responseStructure.setMessage("address saved successfully");
-				responseStructure.setStatus(HttpStatus.CREATED.value());
-				responseStructure.setData(screen);
-				return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.CREATED);
-			}
+			screen.setTheatre(theatre);
+			screen = screenDao.saveScreen(screen);
+			theaterDao.updateTheatre(theatreId, theatre);
+			responseStructure.setMessage("address saved successfully");
+			responseStructure.setStatus(HttpStatus.CREATED.value());
+			responseStructure.setData(screen);
+			return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.CREATED);
+		}
 		throw new ScreenNotFoundByIdException("Failed to add Screen!!");
-
+// SharathVeda
 	}
 
+	public ResponseEntity<ResponseStructure<ScreenDto>> updateScreen(long screenId, ScreenDto screenDto) {
+		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();
+		Screen screen = this.modelMapper.map(screenDto, Screen.class);
+		screen = screenDao.updateScreen(screenId, screen);
+		if (screen != null) {
+			responseStructure.setMessage("address updated successfully");
+			responseStructure.setStatus(HttpStatus.OK.value());
+			responseStructure.setData(screen);
+			return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.OK);
+		}
+		throw new ScreenNotFoundByIdException("Failed to add Screen!!");
+	}
+
+	public ResponseEntity<ResponseStructure<ScreenDto>> deleteScreen(long screenId) {
+		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();
+		Screen screen = screenDao.deleteScreen(screenId);
+		if (screen != null) {
+			responseStructure.setMessage("address deleted successfully");
+			responseStructure.setStatus(HttpStatus.OK.value());
+			responseStructure.setData(screen);
+			return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.OK);
+		}
+		throw new ScreenNotFoundByIdException("Failed to add Screen!!");
+	}
+
+	public ResponseEntity<ResponseStructure<ScreenDto>> getScreenById(long screenId) {
+		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();
+		Screen screen = screenDao.getScreenById(screenId);
+		if (screen != null) {
+			responseStructure.setMessage("address fetched successfully");
+			responseStructure.setStatus(HttpStatus.FOUND.value());
+			responseStructure.setData(screen);
+			return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.FOUND);
+		}
+		throw new ScreenNotFoundByIdException("Failed to add Screen!!");
+	}
 }
