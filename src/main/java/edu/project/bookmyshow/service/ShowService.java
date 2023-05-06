@@ -60,7 +60,7 @@ public class ShowService {
 				Movie movie = movieDao.getMovie(movieId);
 				if (movie != null) {
 					show.setMovieId(movieId);
-					show.setGenre(movie.getGenre1());
+					show.setGenre(movie.getGenre1()+", "+movie.getGenre2()+", "+movie.getGenre3());
 					show.setLanguage(movie.getLanguage());
 					show.setMovieNaame(movie.getMovieName());
 					show.setMovieDuration(movie.getMovieDuration());
@@ -137,7 +137,7 @@ public class ShowService {
 						Movie movie = movieDao.getMovie(movieId);
 						if (movie != null) {
 							show.setMovieId(movieId);
-							show.setGenre(movie.getGenre1());
+							show.setGenre(movie.getGenre1()+", "+movie.getGenre2()+", "+movie.getGenre3());
 							show.setLanguage(movie.getLanguage());
 							show.setMovieNaame(movie.getMovieName());
 							show.setMovieDuration(movie.getMovieDuration());
@@ -199,7 +199,6 @@ public class ShowService {
 		responseStructure.setData(show);
 		return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.OK);
 	}
-
 	/**
 	 * write a method to cancel show. note: should have to make sure if the
 	 * showStatus is set to update as cancelled, set back the screenAvailability as

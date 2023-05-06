@@ -3,17 +3,16 @@ package edu.project.bookmyshow.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import edu.project.bookmyshow.dao.BookingDao;
 import edu.project.bookmyshow.dao.CustomerDao;
 import edu.project.bookmyshow.dao.SeatDao;
 import edu.project.bookmyshow.dao.ShowDao;
 import edu.project.bookmyshow.dao.TicketDao;
-import edu.project.bookmyshow.dto.TicketDto;
 import edu.project.bookmyshow.entity.Booking;
 import edu.project.bookmyshow.entity.Customer;
 import edu.project.bookmyshow.entity.Seat;
@@ -33,19 +32,20 @@ public class TicketService {
 
 	@Autowired
 	private TicketDao ticketDao;
-	@Autowired
-	private ModelMapper mapper;
+//	@Autowired
+//	private ModelMapper mapper;
 	@Autowired
 	private CustomerDao customerDao;
 	@Autowired
 	private ShowDao showDao;
 	@Autowired
 	private SeatDao seatDao;
-	// create a bookingDao.
+	@Autowired
+	private BookingDao bookingDao;
 
-	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(TicketDto ticketDto, long customerId, long showId,
+	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(long customerId, long showId,
 			Long[] seatId) {
-		Ticket ticket = (Ticket) mapper.map(ticketDto, Ticket.class);
+		Ticket ticket = new Ticket();
 		Customer customer = customerDao.getCustomerById(customerId);
 		if (customer != null) {
 			ticket.setCustomer(customer);
@@ -83,27 +83,29 @@ public class TicketService {
 						switch (seatType) {
 						case CLASSIC:
 							booking.setSeatPrice(show.getClassicSeatPrice());
-							totalPrice = show.getClassicSeatPrice();
+							totalPrice += show.getClassicSeatPrice();
 							break;
 
 						case GOLD:
 							booking.setSeatPrice(show.getGoldSeatPrice());
-							totalPrice = show.getGoldSeatPrice();
+							totalPrice += show.getGoldSeatPrice();
 							break;
 
 						case PREMIUM:
 							booking.setSeatPrice(show.getPremiumSeatPrice());
-							totalPrice = show.getPremiumSeatPrice();
+							totalPrice += show.getPremiumSeatPrice();
 							break;
 						}
 
 						bookings.add(booking);
 						seats.add(seat);
 					}
-
+					bookingDao.saveBooking(booking);
 				}
 
-			} // save booking through bookingDao.
+			}
+			// save booking through bookingDao.
+			
 		}
 		ticket.setTicketStatus(TicketStatus.ACTIVE);
 		ticket.setTotalPrice(totalPrice);
