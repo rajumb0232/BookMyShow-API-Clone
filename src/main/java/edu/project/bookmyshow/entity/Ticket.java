@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.project.bookmyshow.enums.TicketStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,5 +35,6 @@ public class Ticket {
 	
 	@ManyToOne 
 	@JoinColumn
+	@JsonIgnore
 	private Customer customer;
 }

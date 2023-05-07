@@ -3,6 +3,7 @@ package edu.project.bookmyshow.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,10 +29,9 @@ public class Theatre {
 	
 	@OneToOne 
 	@JoinColumn
-
 	private Address address;
 	
-	@OneToMany(mappedBy = "theatre")
+	@OneToMany(mappedBy = "theatre",fetch = FetchType.EAGER)
 	//@JsonIgnore
 	private List<Screen> screens;
 	
@@ -41,7 +41,7 @@ public class Theatre {
 	private Owner owner;
 	
 	@OneToMany(mappedBy = "theatre")
-
+	@JsonIgnore
 	private List<Show> shows;
 
 }

@@ -109,4 +109,76 @@ public class BookMyShowExceptionHandler {
 		structure.setData("Cannot update the show tickets already booked!!");
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> ShowPresentInRequestedTime(ShowPresentInRequestedTimeException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.BAD_REQUEST.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Show is present between the requested date and time!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> ShowsNotFoundInLocation(ShowsNotFoundInLocationException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Shows Not Found with the requested City!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> ShowsNotFoundForMovie(ShowsNotFoundForMovieException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Shows Not Found for the requested MovieId!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> TicketNotFoundById(TicketNotFoundByIdException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Ticket Not Found with the requested Id!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> TicketAlreadyExpired(TicketAlreadyExpiredException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.BAD_REQUEST.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Ticket is already Expired to cancel / cannot cancel expired ticket!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> TicketAlreadyCancelled(TicketAlreadyCancelledException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.BAD_REQUEST.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Ticket is already Cancelled!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> SeatNotFoundById(SeatNotFoundByIdException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Seat Not Found with requested Id!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> ShowOnGoingOrClosed(ShowOnGoingOrClosedException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.BAD_REQUEST.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Show requested is On_going, closed or cancelled!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_REQUEST);
+	}
 }

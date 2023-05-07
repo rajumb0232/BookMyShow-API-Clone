@@ -20,7 +20,6 @@ public class Seat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long seatId;
-	private String seatNumber;
 	private SeatStatus seatStatus;
 	private SeatType seatType;
 	

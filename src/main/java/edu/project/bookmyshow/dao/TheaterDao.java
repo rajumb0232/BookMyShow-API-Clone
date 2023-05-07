@@ -28,7 +28,10 @@ public class TheaterDao {
 	public Theatre deleteTheatre(long theatreId) {
 		Optional<Theatre> optional=repo.findById(theatreId);
 		if(optional.isPresent()) {
+		
 			Theatre theatre=optional.get();
+			theatre.setScreens(null);
+			theatre.setShows(null);
 			 repo.delete(theatre);
 			 return optional.get();
 		}

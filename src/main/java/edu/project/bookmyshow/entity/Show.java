@@ -1,5 +1,6 @@
 package edu.project.bookmyshow.entity;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import javax.persistence.Entity;
@@ -11,7 +12,6 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import edu.project.bookmyshow.enums.Genre;
 import edu.project.bookmyshow.enums.ShowStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +23,14 @@ public class Show {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long showId;
-	private LocalTime showTime;
+	private LocalDateTime showStartTime;
+	private LocalDateTime showEndTime;
 	private ShowStatus showStatus;
+	private String showLocation;
 	
 	private long movieId;
 	private String movieNaame;
-	private Genre genre;
+	private String genre;
 	private LocalTime movieDuration;
 	private String movieDescription;
 	private String language;

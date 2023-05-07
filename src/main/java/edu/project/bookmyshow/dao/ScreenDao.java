@@ -47,4 +47,8 @@ public class ScreenDao {
 		}
 		return null;
 	}
+
+	public Screen cancelShow(Screen screen) {
+		return screenRepo.save(screen);
+	}
 }
