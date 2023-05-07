@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,12 @@ public class TicketController {
 	@ApiResponses(value = { @ApiResponse(code = 302, message = "Successfully fetched"),
 			@ApiResponse(code = 404, message = "Ticket not found for the given  id") })
 	@GetMapping
-	public Integer[] test(@RequestParam Integer[] seatId) {
-		return seatId;
+	public ResponseEntity<ResponseStructure<Ticket>> getTicket(@RequestParam long ticketId) {
+		return ticketService.getTicket(ticketId);
+	}
+	
+	@PutMapping
+	public ResponseEntity<ResponseStructure<Ticket>> cancelTicket(@RequestParam long ticketId){
+		return ticketService.cancelTicket(ticketId);
 	}
 }

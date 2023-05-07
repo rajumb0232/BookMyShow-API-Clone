@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import edu.project.bookmyshow.dao.ScreenDao;
-import edu.project.bookmyshow.dao.SeatDao;
 import edu.project.bookmyshow.dao.TheaterDao;
 import edu.project.bookmyshow.dto.ScreenDto;
 import edu.project.bookmyshow.entity.Screen;
@@ -32,9 +31,6 @@ public class ScreenService {
 
 	@Autowired
 	private TheaterDao theaterDao;
-
-	@Autowired
-	private SeatDao seatDao;
 
 	public ResponseEntity<ResponseStructure<ScreenDto>> saveScreen(long theatreId, ScreenDto screenDto) {
 		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();

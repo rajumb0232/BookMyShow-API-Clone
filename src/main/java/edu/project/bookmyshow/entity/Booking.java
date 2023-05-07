@@ -20,7 +20,6 @@ public class Booking {
 	
 	private long seatId;
 	
-	private String seatNumber;
 	private SeatType seatType;
 	
 	private double seatPrice;

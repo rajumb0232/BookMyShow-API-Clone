@@ -41,4 +41,22 @@ public class ShowDao {
 	public Show cancelShow(Show show) {
 		return showRepo.save(show);
 	}
+	
+	public List<Show> getShowsByCity(String city){
+		Optional<List<Show>> optional = showRepo.getShowsByCity(city);
+		if(optional.isEmpty()) {
+			return null;
+		}else {
+			return optional.get();
+		}
+	}
+	
+	public List<Show> getShowsByMovieId(long movieId){
+		Optional<List<Show>> optional = showRepo.getShowsByMovieId(movieId);
+		if(optional.isEmpty()) {
+			return null;
+		}else {
+			return optional.get();
+		}
+	}
 }

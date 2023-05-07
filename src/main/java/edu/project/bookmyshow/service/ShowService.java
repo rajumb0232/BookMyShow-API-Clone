@@ -30,6 +30,8 @@ import edu.project.bookmyshow.exception.NullObjectPassedException;
 import edu.project.bookmyshow.exception.ScreenNotFoundByIdException;
 import edu.project.bookmyshow.exception.ShowNotFoundByIdException;
 import edu.project.bookmyshow.exception.ShowPresentInRequestedTimeException;
+import edu.project.bookmyshow.exception.ShowsNotFoundForMovieException;
+import edu.project.bookmyshow.exception.ShowsNotFoundInLocationException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -101,6 +103,8 @@ public class ShowService {
 		}
 	}
 
+	
+	
 	public ResponseEntity<ResponseStructure<Show>> getShow(long showId) {
 		Show show = showDao.getShow(showId);
 		if (show != null) {
@@ -114,6 +118,8 @@ public class ShowService {
 		}
 	}
 
+	
+	
 	public ResponseEntity<ResponseStructure<Show>> updadeShow(long showId, ShowDto showDto, long screenId,
 			long movieId) {
 		Show existing = showDao.getShow(showId);
@@ -127,7 +133,7 @@ public class ShowService {
 				 * checking if the show run time fits in between the previous and next show
 				 */
 				List<Show> shows = showDao.getShowsIfPresentBetween(show.getShowStartTime(), show.getShowEndTime());
-				if (shows.size() > 0) {
+				if (shows.size() == 0) {
 					List<Seat> seats = seatDao.getSeatsByStatusByScreen(SeatStatus.BOOKED, screen);
 					if (seats.size() == 0) {
 						/*
@@ -162,7 +168,7 @@ public class ShowService {
 				responseStructure.setData(show);
 				return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.CREATED);
 			} else {
-				throw new ShowPresentInRequestedTimeException("Failed to add Show!!");
+				throw new ShowPresentInRequestedTimeException("Failed to update Show!!");
 			}
 		} else {
 			throw new NullObjectPassedException("Failed to update Show!!");
@@ -192,18 +198,57 @@ public class ShowService {
 				screenDao.cancelShow(screen);
 				showDao.cancelShow(show);
 			}
+			ResponseStructure<Show> responseStructure = new ResponseStructure<>();
+			responseStructure.setStatus(HttpStatus.OK.value());
+			responseStructure.setMessage("Show Cancelled Successfully.");
+			responseStructure.setData(show);
+			return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.OK);
+		}else {
+			throw new ShowNotFoundByIdException("Failed to Cancel Show!!");
 		}
-		ResponseStructure<Show> responseStructure = new ResponseStructure<>();
-		responseStructure.setStatus(HttpStatus.OK.value());
-		responseStructure.setMessage("Show Cancelled Successfully.");
-		responseStructure.setData(show);
-		return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.OK);
+
 	}
-	/**
-	 * write a method to cancel show. note: should have to make sure if the
-	 * showStatus is set to update as cancelled, set back the screenAvailability as
-	 * not_alloted & set back the screenStatus as Available, set all the related
-	 * tickets status to cancelled, and set back all the seat status to Available
-	 */
+
+
+
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByCity(String city) {
+		List<Show> shows = showDao.getShowsByCity(city);
+		if(shows!=null) {
+			if(shows.isEmpty()) {
+				throw new ShowsNotFoundInLocationException("Failed to find Shows!!");
+			}else {
+			ResponseStructure<List<Show>> responseStructure = new ResponseStructure<>();
+			responseStructure.setStatus(HttpStatus.FOUND.value());
+			responseStructure.setMessage("Shows Found.");
+			responseStructure.setData(shows);
+			return new ResponseEntity<ResponseStructure<List<Show>>>(responseStructure, HttpStatus.FOUND);	
+			}
+		}else {
+			throw new ShowsNotFoundInLocationException("Failed to find Shows!!");
+		}
+	}
+	
+	
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByMovieId(long movieId) {
+		Movie movie= movieDao.getMovie(movieId);
+		if(movie!=null) {
+			List<Show> shows = showDao.getShowsByMovieId(movieId);
+			if(shows!=null) {
+				if(shows.isEmpty()) {
+					throw new ShowsNotFoundInLocationException("Failed to find Shows!!");
+				}else {
+				ResponseStructure<List<Show>> responseStructure = new ResponseStructure<>();
+				responseStructure.setStatus(HttpStatus.FOUND.value());
+				responseStructure.setMessage("Shows Found.");
+				responseStructure.setData(shows);
+				return new ResponseEntity<ResponseStructure<List<Show>>>(responseStructure, HttpStatus.FOUND);	
+				}			
+			}else {
+				throw new ShowsNotFoundForMovieException("Failed to find Shows!!");
+			}
+		}else
+			throw new MovieNotFoundByIdException("Failed to find shows!!");
+		
+	}
 
 }

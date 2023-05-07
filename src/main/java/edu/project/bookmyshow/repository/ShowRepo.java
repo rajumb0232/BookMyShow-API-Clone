@@ -13,4 +13,10 @@ public interface ShowRepo extends JpaRepository<Show, Long> {
 	
 	@Query(value = "select s from Show s where s.showStartTime between ?1 and ?2")
 	public Optional<List<Show>> getShowsIfPresentBetween(LocalDateTime startTime, LocalDateTime endTime);
+	
+	@Query(value = "select s from Show s where s.showLocation=?1")
+	public Optional<List<Show>> getShowsByCity(String city);
+	
+	@Query(value = "select s from Show s where s.movieId=?1")
+	public Optional<List<Show>> getShowsByMovieId(long movieId);
 }

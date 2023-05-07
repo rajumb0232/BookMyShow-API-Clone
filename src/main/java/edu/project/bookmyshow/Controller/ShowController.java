@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,5 +41,15 @@ public class ShowController {
 	@GetMapping
 	public ResponseEntity<ResponseStructure<Show>> getShow(@RequestParam long showId) {
 		return showService.getShow(showId);
+	}
+	
+	@GetMapping("/city")
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByCity(@RequestParam String city){
+		return showService.getShowsByCity(city);
+	}
+	
+	@GetMapping("/movie")
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByMovieId(@RequestParam long movieId){
+		return showService.getShowsByMovieId(movieId);
 	}
 }

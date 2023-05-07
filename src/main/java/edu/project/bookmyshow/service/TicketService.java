@@ -20,11 +20,17 @@ import edu.project.bookmyshow.entity.Show;
 import edu.project.bookmyshow.entity.Ticket;
 import edu.project.bookmyshow.enums.SeatStatus;
 import edu.project.bookmyshow.enums.SeatType;
+import edu.project.bookmyshow.enums.ShowStatus;
 import edu.project.bookmyshow.enums.TicketStatus;
 import edu.project.bookmyshow.exception.CustomerNotFoundByIdException;
 import edu.project.bookmyshow.exception.SeatAlreadyBookedException;
+import edu.project.bookmyshow.exception.SeatNotFoundByIdException;
 import edu.project.bookmyshow.exception.SeatTemporarilyBlockedException;
 import edu.project.bookmyshow.exception.ShowNotFoundByIdException;
+import edu.project.bookmyshow.exception.ShowOnGoingOrClosedException;
+import edu.project.bookmyshow.exception.TicketAlreadyCancelledException;
+import edu.project.bookmyshow.exception.TicketAlreadyExpiredException;
+import edu.project.bookmyshow.exception.TicketNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
 @Service
@@ -32,8 +38,6 @@ public class TicketService {
 
 	@Autowired
 	private TicketDao ticketDao;
-//	@Autowired
-//	private ModelMapper mapper;
 	@Autowired
 	private CustomerDao customerDao;
 	@Autowired
@@ -43,20 +47,24 @@ public class TicketService {
 	@Autowired
 	private BookingDao bookingDao;
 
-	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(long customerId, long showId,
-			Long[] seatId) {
+	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(long customerId, long showId, Long[] seatId) {
 		Ticket ticket = new Ticket();
 		Customer customer = customerDao.getCustomerById(customerId);
 		if (customer != null) {
 			ticket.setCustomer(customer);
 		} else {
-			throw new CustomerNotFoundByIdException("failed to add ticket!!");
+			throw new CustomerNotFoundByIdException("failed to book ticket!!");
 		}
 		Show show = showDao.getShow(showId);
 		if (show != null) {
-			ticket.setShow(show);
+			if(show.getShowStatus().equals(ShowStatus.ACTIVE)) {
+				ticket.setShow(show);
+			}else {
+				throw new ShowOnGoingOrClosedException("Failed to book ticket!!");
+			}
+			
 		} else {
-			throw new ShowNotFoundByIdException("Failed to add ticket!!");
+			throw new ShowNotFoundByIdException("Failed to book ticket!!");
 		}
 		List<Booking> bookings = new ArrayList<>();
 		List<Seat> seats = new ArrayList<>();
@@ -100,12 +108,15 @@ public class TicketService {
 						bookings.add(booking);
 						seats.add(seat);
 					}
-					bookingDao.saveBooking(booking);
+					
 				}
 
-			}
-			// save booking through bookingDao.
-			
+			}else
+				throw new SeatNotFoundByIdException("Failed to Book Ticket!!");
+
+		}
+		for(Booking booking : bookings) {
+			bookingDao.saveBooking(booking);
 		}
 		ticket.setTicketStatus(TicketStatus.ACTIVE);
 		ticket.setTotalPrice(totalPrice);
@@ -122,14 +133,54 @@ public class TicketService {
 		responseStructure.setMessage("Ticket Booked Successfully.");
 		responseStructure.setData(ticket);
 		return new ResponseEntity<ResponseStructure<Ticket>>(responseStructure, HttpStatus.CREATED);
-
 	}
 
-	/**
-	 * create a method for scheduled job, where this method will responsible to set
-	 * the seatStatus to available after exceeding the show time all the tickets
-	 * related to the show should get expired. if the show gets cancelled, the
-	 * ticket status should also be cancelled if they are active.
-	 */
+	
+	
+	public ResponseEntity<ResponseStructure<Ticket>> cancelTicket(long ticketId) {
+		Ticket ticket = ticketDao.getTicket(ticketId);
+		if (ticket != null) {
+			if (ticket.getTicketStatus().equals(TicketStatus.EXPIRED)) {
+				throw new TicketAlreadyExpiredException("Failed to Cancel Ticekt!!");
+			} else {
+				if (ticket.getTicketStatus().equals(TicketStatus.CANCELLED)) {
+					throw new TicketAlreadyCancelledException("Failed to cancel Ticket!!");
+				} else {
+					List<Booking> booking = ticket.getBookings();
+					for (Booking b : booking) {
+						Seat seat = seatDao.getSeat(b.getSeatId());
+						seat.setSeatStatus(SeatStatus.AVAILABLE);
+						seatDao.updateSeat(seat);
+					}
+					ticket.setTicketStatus(TicketStatus.CANCELLED);
+
+					ResponseStructure<Ticket> responseStructure = new ResponseStructure<>();
+					responseStructure.setStatus(HttpStatus.OK.value());
+					responseStructure.setMessage("Ticket Cancelled Successfully.");
+					responseStructure.setData(ticket);
+					return new ResponseEntity<ResponseStructure<Ticket>>(responseStructure, HttpStatus.OK);
+				}
+
+			}
+		} else {
+			throw new TicketNotFoundByIdException("Failed to Cancel Ticket!!");
+		}
+	}
+
+	
+	
+	public ResponseEntity<ResponseStructure<Ticket>> getTicket(long ticketId) {
+		Ticket ticket = ticketDao.getTicket(ticketId);
+		if (ticket != null) {
+			ResponseStructure<Ticket> responseStructure = new ResponseStructure<>();
+			responseStructure.setStatus(HttpStatus.FOUND.value());
+			responseStructure.setMessage("Ticket Found.");
+			responseStructure.setData(ticket);
+			return new ResponseEntity<ResponseStructure<Ticket>>(responseStructure, HttpStatus.FOUND);
+		} else {
+			throw new TicketNotFoundByIdException("Failed to Find Ticket!!");
+		}
+	}
+
 
 }
