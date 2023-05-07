@@ -20,13 +20,15 @@ public interface ShowRepo extends JpaRepository<Show, Long> {
 	
 	
 	/*
-	 * method is used fetch the list of shows with the given location*/
+	 * method is used fetch the list of shows with the given location
+	 * at the status active*/
 	@Query(value = "select s from Show s where s.showLocation=?1")
 	public Optional<List<Show>> getShowsByCity(String city);
 	
 
 	/*
-	 * method is used to fetch the available shows for a particular movie*/
+	 * method is used to fetch the available shows for a particular movie
+	 * at the status active*/
 	@Query(value = "select s from Show s where s.movieId=?1")
 	public Optional<List<Show>> getShowsByMovieId(long movieId);
 	
@@ -34,10 +36,10 @@ public interface ShowRepo extends JpaRepository<Show, Long> {
 	/*
 	 * method is used to fetch all the shows that is having show start time within
 	 *  or less than the current localDateTime */
-	@Query(value = "select s from Show s where s.showStartTime<=?1")
-	public Optional<List<Show>> getShowsByTime(LocalDateTime dateTime);
+	@Query(value = "select s from Show s where s.showStartTime<=?1 and s.showStatus=?2")
+	public Optional<List<Show>> getShowsByTime(LocalDateTime dateTime, ShowStatus active);
 	
 	
-	@Query(value = "select s from Show s where s.showEndTime<=?1 and s.showStatus=?1")
+	@Query(value = "select s from Show s where s.showEndTime<=?1 and s.showStatus=?2")
 	public Optional<List<Show>> getClosedShows(LocalDateTime dateTime, ShowStatus showStatus);
 }

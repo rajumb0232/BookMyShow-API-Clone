@@ -3,6 +3,7 @@ package edu.project.bookmyshow.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class Ticket {
 	@ManyToOne
 	private Show show;
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Booking> bookings;
 	
 	@ManyToOne 

@@ -15,7 +15,6 @@ import edu.project.bookmyshow.dto.ScreenDto;
 import edu.project.bookmyshow.entity.Screen;
 import edu.project.bookmyshow.entity.Seat;
 import edu.project.bookmyshow.entity.Theatre;
-import edu.project.bookmyshow.enums.SeatStatus;
 import edu.project.bookmyshow.enums.SeatType;
 import edu.project.bookmyshow.exception.ScreenNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
@@ -41,21 +40,18 @@ public class ScreenService {
 
 			for (int c = screen.getNumberOfClassicSeat(); c > 0; c--) {
 				Seat seat = new Seat();
-				seat.setSeatStatus(SeatStatus.AVAILABLE);
 				seat.setSeatType(SeatType.CLASSIC);
 				seat.setScreen(screen);
 				seats.add(seat);
 			}
 			for (int g = screen.getNumberOfGoldSeat(); g > 0; g--) {
 				Seat seat = new Seat();
-				seat.setSeatStatus(SeatStatus.AVAILABLE);
 				seat.setSeatType(SeatType.GOLD);
 				seat.setScreen(screen);
 				seats.add(seat);
 			}
 			for (int p = screen.getNumberOfPlatinumSeat(); p > 0; p--) {
 				Seat seat = new Seat();
-				seat.setSeatStatus(SeatStatus.AVAILABLE);
 				seat.setSeatType(SeatType.PREMIUM);
 				seat.setScreen(screen);
 				seats.add(seat);
