@@ -70,7 +70,7 @@ public class BookMyShowExceptionHandler {
 		ResponseStructure<String> structure = new ResponseStructure<>();
 		structure.setStatus(HttpStatus.NOT_FOUND.value());
 		structure.setMessage(ex.getMessage());
-		structure.setData("The requested seat is being booked for an other user!!");
+		structure.setData("The requested seat is being booked for the requested show for an other user!!");
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
 	}
 
@@ -120,6 +120,15 @@ public class BookMyShowExceptionHandler {
 	}
 	
 	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> ShowAlreadyExpired(ShowAlreadyExpiredException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.BAD_REQUEST.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Show requested is already expired!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
 	public ResponseEntity<ResponseStructure<String>> ShowsNotFoundInLocation(ShowsNotFoundInLocationException ex){
 		ResponseStructure<String> structure = new ResponseStructure<>();
 		structure.setStatus(HttpStatus.NOT_FOUND.value());
@@ -161,6 +170,15 @@ public class BookMyShowExceptionHandler {
 		structure.setStatus(HttpStatus.BAD_REQUEST.value());
 		structure.setMessage(ex.getMessage());
 		structure.setData("Ticket is already Cancelled!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> TicketCannotBeCancelled(TicketCannotBeCancelledException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.BAD_REQUEST.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Ticket cannot be cancelled when show status is On_Going!!");
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_REQUEST);
 	}
 	

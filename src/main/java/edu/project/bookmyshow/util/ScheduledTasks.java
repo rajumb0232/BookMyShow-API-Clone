@@ -7,17 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import edu.project.bookmyshow.dao.BookingDao;
 import edu.project.bookmyshow.dao.ScreenDao;
-import edu.project.bookmyshow.dao.SeatDao;
 import edu.project.bookmyshow.dao.ShowDao;
 import edu.project.bookmyshow.dao.TicketDao;
+import edu.project.bookmyshow.entity.Booking;
 import edu.project.bookmyshow.entity.Screen;
-import edu.project.bookmyshow.entity.Seat;
 import edu.project.bookmyshow.entity.Show;
 import edu.project.bookmyshow.entity.Ticket;
+import edu.project.bookmyshow.enums.BookingStatus;
 import edu.project.bookmyshow.enums.ScreenAvailability;
 import edu.project.bookmyshow.enums.Screenstatus;
-import edu.project.bookmyshow.enums.SeatStatus;
 import edu.project.bookmyshow.enums.ShowStatus;
 import edu.project.bookmyshow.enums.TicketStatus;
 
@@ -29,15 +29,15 @@ public class ScheduledTasks {
 	@Autowired
 	private ScreenDao screenDao;
 	@Autowired
-	private SeatDao seatDao;
-	@Autowired
 	private TicketDao ticketDao;
+	@Autowired
+	private BookingDao bookingDao;
 	
 	/**
 	 * method to reset
 	 * show status to Closed
 	 * the screen availability to not_alloted, screenStatus to available
-	 * seat status to available
+	 * booking status to expired
 	 * ticket status to expired 
 	 * -- once the show gets completed
 	 *  ---------- get shows by showEndTime
@@ -52,7 +52,7 @@ public class ScheduledTasks {
 		/*
 		 * method is used to fetch all the shows that is having show start time within
 		 *  or less than the current localDateTime */
-		List<Show> shows = showDao.getShowsByTime(LocalDateTime.now());
+		List<Show> shows = showDao.getShowsByTime(LocalDateTime.now(), ShowStatus.ACTIVE);
 		if(shows!=null) {
 			if(shows.size()>0) {
 				for(Show show : shows) {
@@ -73,19 +73,19 @@ public class ScheduledTasks {
 					Screen screen = screenDao.getScreenById(show.getScreenId());
 					screen.setScreenAvailability(ScreenAvailability.NOT_ALLOTTED);
 					screen.setScreenstatus(Screenstatus.AVAILABLE);
-					List<Seat> seats = seatDao.getSeatsByStatusByScreen(SeatStatus.BLOCKED, screen);
-					for(Seat seat : seats) {
-						seat.setSeatStatus(SeatStatus.AVAILABLE);
-						seatDao.updateSeat(seat);
-					}
-					seats = seatDao.getSeatsByStatusByScreen(SeatStatus.BOOKED, screen);
-					for(Seat seat : seats) {
-						seat.setSeatStatus(SeatStatus.AVAILABLE);
-						seatDao.updateSeat(seat);
-					}
 					screenDao.saveScreen(screen);
+					
 					List<Ticket> tickets = ticketDao.getTicketsByShow(show);
 					for(Ticket ticket : tickets) {
+						ticket.setTicketStatus(TicketStatus.EXPIRED);
+						List<Booking> bookings = ticket.getBookings();
+						for(Booking booking : bookings) {
+							if(booking.getBookingStatus().equals(BookingStatus.ACTIVE)) {
+								booking.setBookingStatus(BookingStatus.EXPIRED);
+								bookingDao.saveBooking(booking);
+							}
+						}
+						// also used to update since Id is already set.
 						ticket.setTicketStatus(TicketStatus.EXPIRED);
 						ticketDao.bookTicket(ticket);
 					}
@@ -95,4 +95,12 @@ public class ScheduledTasks {
 			}
 		}
 	}
+	
+	
+	/**
+	 * schedule a task to block seat to the user, and then release after 10min
+	 * 
+	 * issue - if seat is booked to a show, then other shows cannot have the same seat
+	 * even the show time is different*/
+	
 }

@@ -65,8 +65,8 @@ public class ShowDao {
 		}
 	}
 	
-	public List<Show> getShowsByTime(LocalDateTime dateTime){
-		Optional<List<Show>> optional = showRepo.getShowsByTime(dateTime);
+	public List<Show> getShowsByTime(LocalDateTime dateTime, ShowStatus active){
+		Optional<List<Show>> optional = showRepo.getShowsByTime(dateTime, active);
 		if(optional.isEmpty()) {
 			return null;
 		}else {

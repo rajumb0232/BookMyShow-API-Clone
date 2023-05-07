@@ -18,18 +18,18 @@ import edu.project.bookmyshow.entity.Customer;
 import edu.project.bookmyshow.entity.Seat;
 import edu.project.bookmyshow.entity.Show;
 import edu.project.bookmyshow.entity.Ticket;
-import edu.project.bookmyshow.enums.SeatStatus;
+import edu.project.bookmyshow.enums.BookingStatus;
 import edu.project.bookmyshow.enums.SeatType;
 import edu.project.bookmyshow.enums.ShowStatus;
 import edu.project.bookmyshow.enums.TicketStatus;
 import edu.project.bookmyshow.exception.CustomerNotFoundByIdException;
 import edu.project.bookmyshow.exception.SeatAlreadyBookedException;
 import edu.project.bookmyshow.exception.SeatNotFoundByIdException;
-import edu.project.bookmyshow.exception.SeatTemporarilyBlockedException;
 import edu.project.bookmyshow.exception.ShowNotFoundByIdException;
 import edu.project.bookmyshow.exception.ShowOnGoingOrClosedException;
 import edu.project.bookmyshow.exception.TicketAlreadyCancelledException;
 import edu.project.bookmyshow.exception.TicketAlreadyExpiredException;
+import edu.project.bookmyshow.exception.TicketCannotBeCancelledException;
 import edu.project.bookmyshow.exception.TicketNotFoundByIdException;
 import edu.project.bookmyshow.util.ResponseStructure;
 
@@ -57,12 +57,12 @@ public class TicketService {
 		}
 		Show show = showDao.getShow(showId);
 		if (show != null) {
-			if(show.getShowStatus().equals(ShowStatus.ACTIVE)) {
+			if (show.getShowStatus().equals(ShowStatus.ACTIVE)) {
 				ticket.setShow(show);
-			}else {
+			} else {
 				throw new ShowOnGoingOrClosedException("Failed to book ticket!!");
 			}
-			
+
 		} else {
 			throw new ShowNotFoundByIdException("Failed to book ticket!!");
 		}
@@ -77,57 +77,49 @@ public class TicketService {
 		for (Long id : seatId) {
 			Seat seat = seatDao.getSeat(id);
 			if (seat != null) {
-				if (seat.getSeatStatus().equals(SeatStatus.BOOKED)) {
-					throw new SeatAlreadyBookedException("Failed to book ticket");
-				} else {
-					Booking booking = new Booking();
+				Booking booking = bookingDao.getBookingByTime(show.getShowStartTime(), show.getShowEndTime(), id);
+				if (booking == null) {
+					booking = new Booking();
 					booking.setSeatId(seat.getSeatId());
-					if (seat.getSeatStatus().equals(SeatStatus.BLOCKED)) {
-						throw new SeatTemporarilyBlockedException("Failed to book ticket!!");
-					} else {
-						booking.setSeatType(seat.getSeatType());
-						SeatType seatType = booking.getSeatType();
+					booking.setSeatType(seat.getSeatType());
+					booking.setBookingStatus(BookingStatus.ACTIVE);
+					booking.setBookedFromTime(show.getShowStartTime());
+					booking.setBookedTillTime(show.getShowEndTime());
 
-						switch (seatType) {
-						case CLASSIC:
-							booking.setSeatPrice(show.getClassicSeatPrice());
-							totalPrice += show.getClassicSeatPrice();
-							break;
+					SeatType seatType = booking.getSeatType();
+					switch (seatType) {
+					case CLASSIC:
+						booking.setSeatPrice(show.getClassicSeatPrice());
+						totalPrice += show.getClassicSeatPrice();
+						break;
 
-						case GOLD:
-							booking.setSeatPrice(show.getGoldSeatPrice());
-							totalPrice += show.getGoldSeatPrice();
-							break;
+					case GOLD:
+						booking.setSeatPrice(show.getGoldSeatPrice());
+						totalPrice += show.getGoldSeatPrice();
+						break;
 
-						case PREMIUM:
-							booking.setSeatPrice(show.getPremiumSeatPrice());
-							totalPrice += show.getPremiumSeatPrice();
-							break;
-						}
-
-						bookings.add(booking);
-						seats.add(seat);
+					case PREMIUM:
+						booking.setSeatPrice(show.getPremiumSeatPrice());
+						totalPrice += show.getPremiumSeatPrice();
+						break;
 					}
-					
-				}
 
-			}else
+					bookings.add(booking);
+					seats.add(seat);
+
+				} else
+					throw new SeatAlreadyBookedException("Failed to Book Ticket!!");
+			} else
 				throw new SeatNotFoundByIdException("Failed to Book Ticket!!");
 
 		}
-		for(Booking booking : bookings) {
+		for (Booking booking : bookings) {
 			bookingDao.saveBooking(booking);
 		}
 		ticket.setTicketStatus(TicketStatus.ACTIVE);
 		ticket.setTotalPrice(totalPrice);
 		ticket.setBookings(bookings);
 		ticket = ticketDao.bookTicket(ticket);
-		if (ticket != null) {
-			for (Seat seat : seats) {
-				seat.setSeatStatus(SeatStatus.BOOKED);
-				seatDao.updateSeat(seat);
-			}
-		}
 		ResponseStructure<Ticket> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.CREATED.value());
 		responseStructure.setMessage("Ticket Booked Successfully.");
@@ -136,38 +128,39 @@ public class TicketService {
 	}
 
 	
-	
 	public ResponseEntity<ResponseStructure<Ticket>> cancelTicket(long ticketId) {
 		Ticket ticket = ticketDao.getTicket(ticketId);
 		if (ticket != null) {
-			if (ticket.getTicketStatus().equals(TicketStatus.EXPIRED)) {
-				throw new TicketAlreadyExpiredException("Failed to Cancel Ticekt!!");
+			if (ticket.getShow().getShowStatus().equals(ShowStatus.ON_GOING)) {
+				throw new TicketCannotBeCancelledException("Failed to Cancel Ticket!!");
 			} else {
-				if (ticket.getTicketStatus().equals(TicketStatus.CANCELLED)) {
-					throw new TicketAlreadyCancelledException("Failed to cancel Ticket!!");
+				if (ticket.getTicketStatus().equals(TicketStatus.EXPIRED)) {
+					throw new TicketAlreadyExpiredException("Failed to Cancel Ticekt!!");
 				} else {
-					List<Booking> booking = ticket.getBookings();
-					for (Booking b : booking) {
-						Seat seat = seatDao.getSeat(b.getSeatId());
-						seat.setSeatStatus(SeatStatus.AVAILABLE);
-						seatDao.updateSeat(seat);
+					if (ticket.getTicketStatus().equals(TicketStatus.CANCELLED)) {
+						throw new TicketAlreadyCancelledException("Failed to cancel Ticket!!");
+					} else {
+						List<Booking> booking = ticket.getBookings();
+						for (Booking b : booking) {
+							b.setBookingStatus(BookingStatus.CANCELLED);
+							bookingDao.saveBooking(b);
+						}
+						ticket.setTicketStatus(TicketStatus.CANCELLED);
+
+						ResponseStructure<Ticket> responseStructure = new ResponseStructure<>();
+						responseStructure.setStatus(HttpStatus.OK.value());
+						responseStructure.setMessage("Ticket Cancelled Successfully.");
+						responseStructure.setData(ticket);
+						return new ResponseEntity<ResponseStructure<Ticket>>(responseStructure, HttpStatus.OK);
 					}
-					ticket.setTicketStatus(TicketStatus.CANCELLED);
-
-					ResponseStructure<Ticket> responseStructure = new ResponseStructure<>();
-					responseStructure.setStatus(HttpStatus.OK.value());
-					responseStructure.setMessage("Ticket Cancelled Successfully.");
-					responseStructure.setData(ticket);
-					return new ResponseEntity<ResponseStructure<Ticket>>(responseStructure, HttpStatus.OK);
 				}
-
 			}
+
 		} else {
 			throw new TicketNotFoundByIdException("Failed to Cancel Ticket!!");
 		}
 	}
 
-	
 	
 	public ResponseEntity<ResponseStructure<Ticket>> getTicket(long ticketId) {
 		Ticket ticket = ticketDao.getTicket(ticketId);
@@ -181,6 +174,5 @@ public class TicketService {
 			throw new TicketNotFoundByIdException("Failed to Find Ticket!!");
 		}
 	}
-
 
 }

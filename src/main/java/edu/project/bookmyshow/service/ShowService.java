@@ -8,26 +8,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import edu.project.bookmyshow.dao.BookingDao;
 import edu.project.bookmyshow.dao.MovieDao;
 import edu.project.bookmyshow.dao.ScreenDao;
-import edu.project.bookmyshow.dao.SeatDao;
 import edu.project.bookmyshow.dao.ShowDao;
 import edu.project.bookmyshow.dao.TicketDao;
 import edu.project.bookmyshow.dto.ShowDto;
 import edu.project.bookmyshow.entity.Booking;
 import edu.project.bookmyshow.entity.Movie;
 import edu.project.bookmyshow.entity.Screen;
-import edu.project.bookmyshow.entity.Seat;
 import edu.project.bookmyshow.entity.Show;
 import edu.project.bookmyshow.entity.Ticket;
+import edu.project.bookmyshow.enums.BookingStatus;
 import edu.project.bookmyshow.enums.ScreenAvailability;
 import edu.project.bookmyshow.enums.Screenstatus;
-import edu.project.bookmyshow.enums.SeatStatus;
 import edu.project.bookmyshow.enums.ShowStatus;
 import edu.project.bookmyshow.enums.TicketStatus;
 import edu.project.bookmyshow.exception.MovieNotFoundByIdException;
 import edu.project.bookmyshow.exception.NullObjectPassedException;
 import edu.project.bookmyshow.exception.ScreenNotFoundByIdException;
+import edu.project.bookmyshow.exception.ShowAlreadyExpiredException;
 import edu.project.bookmyshow.exception.ShowNotFoundByIdException;
 import edu.project.bookmyshow.exception.ShowPresentInRequestedTimeException;
 import edu.project.bookmyshow.exception.ShowsNotFoundForMovieException;
@@ -46,9 +46,9 @@ public class ShowService {
 	@Autowired
 	private ShowDao showDao;
 	@Autowired
-	private SeatDao seatDao;
-	@Autowired
 	private TicketDao ticketDao;
+	@Autowired
+	private BookingDao bookingDao;
 
 	public ResponseEntity<ResponseStructure<Show>> addShow(ShowDto showDto, long movieId, long screenId) {
 		if (showDto != null) {
@@ -110,7 +110,7 @@ public class ShowService {
 		if (show != null) {
 			ResponseStructure<Show> responseStructure = new ResponseStructure<>();
 			responseStructure.setStatus(HttpStatus.CREATED.value());
-			responseStructure.setMessage("Show added Successfully.");
+			responseStructure.setMessage("Show Found.");
 			responseStructure.setData(show);
 			return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.CREATED);
 		} else {
@@ -134,10 +134,10 @@ public class ShowService {
 				 */
 				List<Show> shows = showDao.getShowsIfPresentBetween(show.getShowStartTime(), show.getShowEndTime());
 				if (shows.size() == 0) {
-					List<Seat> seats = seatDao.getSeatsByStatusByScreen(SeatStatus.BOOKED, screen);
-					if (seats.size() == 0) {
+					List<Ticket> tickets = ticketDao.getTicketsByShow(show);
+					if (tickets.size() == 0) {
 						/*
-						 * if the show is already having bookings, the the movie and screen cannot be
+						 * if the show is already having bookings, then the movie and screen cannot be
 						 * updated!
 						 */
 						Movie movie = movieDao.getMovie(movieId);
@@ -175,34 +175,41 @@ public class ShowService {
 		}
 	}
 
+	/**
+	 * check if the showStatus is already being cancelled,
+	 * check the booking status, do not update to expired 
+	 * if already cancelled*/
 	public ResponseEntity<ResponseStructure<Show>> cancelShow(long showId) {
 		Show show = showDao.getShow(showId);
 		if (show != null) {
-			Screen screen = screenDao.getScreenById(show.getScreenId());
-			screen.setScreenstatus(Screenstatus.AVAILABLE);
-			screen.setScreenAvailability(ScreenAvailability.NOT_ALLOTTED);
+			if(show.getShowStatus().equals(ShowStatus.ACTIVE)) {
+				Screen screen = screenDao.getScreenById(show.getScreenId());
+				screen.setScreenstatus(Screenstatus.AVAILABLE);
+				screen.setScreenAvailability(ScreenAvailability.NOT_ALLOTTED);
 
-			List<Ticket> tickets = ticketDao.getTicketsByShow(show);
-			if (tickets != null) {
-				for (Ticket ticket : tickets) {
-					List<Booking> bookings = ticket.getBookings();
-					for (Booking booking : bookings) {
-						Seat seat = seatDao.getSeat(booking.getSeatId());
-						seat.setSeatStatus(SeatStatus.AVAILABLE);
-						seatDao.updateSeat(seat);
+				List<Ticket> tickets = ticketDao.getTicketsByShow(show);
+				if (tickets != null) {
+					for (Ticket ticket : tickets) {
+						List<Booking> bookings = ticket.getBookings();
+						for (Booking booking : bookings) {
+							booking.setBookingStatus(BookingStatus.CANCELLED);
+							bookingDao.saveBooking(booking);
+						}
+						ticket.setTicketStatus(TicketStatus.CANCELLED);
+						ticketDao.cancelTicket(ticket);
 					}
-					ticket.setTicketStatus(TicketStatus.CANCELLED);
-					ticketDao.cancelTicket(ticket);
+					show.setShowStatus(ShowStatus.CANCELLED);
+					screenDao.cancelShow(screen);
+					showDao.cancelShow(show);
 				}
-				show.setShowStatus(ShowStatus.CANCELLED);
-				screenDao.cancelShow(screen);
-				showDao.cancelShow(show);
-			}
-			ResponseStructure<Show> responseStructure = new ResponseStructure<>();
-			responseStructure.setStatus(HttpStatus.OK.value());
-			responseStructure.setMessage("Show Cancelled Successfully.");
-			responseStructure.setData(show);
-			return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.OK);
+				ResponseStructure<Show> responseStructure = new ResponseStructure<>();
+				responseStructure.setStatus(HttpStatus.OK.value());
+				responseStructure.setMessage("Show Cancelled Successfully.");
+				responseStructure.setData(show);
+				return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.OK);
+			}else
+				throw new ShowAlreadyExpiredException("Failed to Cancel Show!!");
+
 		}else {
 			throw new ShowNotFoundByIdException("Failed to Cancel Show!!");
 		}

@@ -1,5 +1,8 @@
 package edu.project.bookmyshow.dao;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +17,14 @@ public class BookingDao {
 	
 	public void saveBooking(Booking booking) {
 		bookingRepo.save(booking);
+	}
+
+	public Booking getBookingByTime(LocalDateTime startTime, LocalDateTime endTime, long seatId) {
+		Optional<Booking> optional = bookingRepo.getBookingByTime(startTime, endTime, seatId);
+		if(optional.isEmpty()) {
+			return null;
+		}else {
+			return optional.get();
+		}
 	}
 }
