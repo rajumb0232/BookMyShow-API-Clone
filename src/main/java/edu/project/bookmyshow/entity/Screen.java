@@ -34,19 +34,15 @@ public class Screen {
 	@NotNull(message = "screenName cannot be null")
 	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String screenName;
-	
 	private ScreenType screenType;
 	private ScreenAvailability screenAvailability;
 	private Screenstatus screenstatus;
-	
 	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Seat> seats;
-	
 	private int numberOfClassicSeat;
 	private int numberOfGoldSeat;
 	private int numberOfPlatinumSeat;
-	
 	@ManyToOne
 	@JoinColumn
 	@JsonIgnore

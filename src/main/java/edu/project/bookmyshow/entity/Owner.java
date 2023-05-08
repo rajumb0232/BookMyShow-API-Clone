@@ -40,7 +40,8 @@ public class Owner {
 	private long ownerPhoneNumber;
 	@NotBlank(message = "Owner cannot be blank")
 	@NotNull(message = "Owner cannot be null")
-	@Email(regexp = "[a-zA-Z0-9+_.-]+@[g][m][a][i][l]+.[c][o][m]", message = "invalid email--Should be in the extension of '@gmail.com' ")
+	//@Email(regexp = "[a-zA-Z0-9+_.-]+@[g][m][a][i][l]+.[c][o][m]", message = "invalid email--Should be in the extension of '@gmail.com' ")
+	@Email(regexp = "[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}", message = "invalid email ")
 	private String ownerEmail;
 	@NotBlank(message = "Owner cannot be blank")
 	@NotNull(message = "Owner cannot be null")

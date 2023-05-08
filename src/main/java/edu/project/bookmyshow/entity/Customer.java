@@ -35,7 +35,7 @@ public class Customer {
 	private long customrPhoneNumber;
 	@NotBlank(message = "Customer cannot be blank")
 	@NotNull(message = "Customer cannot be null")
-	@Email(regexp = "[a-zA-Z0-9+_.-]+@[g][m][a][i][l]+.[c][o][m]", message = "invalid email--Should be in the extension of '@gmail.com' ")
+	@Email(regexp = "[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}", message = "invalid email ")
 	private String customerEmail;
 	@NotBlank(message = "Customer cannot be blank")
 	@NotNull(message = "Customer cannot be null")
