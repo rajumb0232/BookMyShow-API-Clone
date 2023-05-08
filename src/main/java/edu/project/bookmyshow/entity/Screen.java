@@ -34,9 +34,7 @@ public class Screen {
 	@NotNull(message = "screenName cannot be null")
 	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String screenName;
-	@NotBlank(message = "screenType cannot be blank")
-	@NotNull(message = "screenType cannot be null")
-	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
+	
 	private ScreenType screenType;
 	private ScreenAvailability screenAvailability;
 	private Screenstatus screenstatus;
