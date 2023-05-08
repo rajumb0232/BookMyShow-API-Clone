@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,7 +30,11 @@ public class Screen {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long screenId;
+	@NotBlank(message = "screenName cannot be blank")
+	@NotNull(message = "screenName cannot be null")
+	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String screenName;
+	
 	private ScreenType screenType;
 	private ScreenAvailability screenAvailability;
 	private Screenstatus screenstatus;

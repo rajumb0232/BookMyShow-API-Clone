@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.Controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +32,7 @@ public class TheaterController {
 			@ApiResponse(code = 404, message = "Theatre not found for the given  id") })
 	@PostMapping
 	public ResponseEntity<ResponseStructure<Theatre>> addTheatre(@RequestParam long ownerId,
-			@RequestBody TheatreDto dto) {
+			@Valid @RequestBody TheatreDto dto) {
 		return service.addTheatre(ownerId, dto);
 	}
 
@@ -39,7 +41,7 @@ public class TheaterController {
 			@ApiResponse(code = 404, message = "Theatre not found for the given  id") })
 	@PutMapping
 	public ResponseEntity<ResponseStructure<Theatre>> updateTheatre(@RequestParam long theaterId,
-			@RequestBody TheatreDto dto) {
+			@Valid @RequestBody TheatreDto dto) {
 		return service.updateTheatre(theaterId, dto);
 	}
 

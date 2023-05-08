@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.Controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +32,7 @@ public class MovieController {
 			@ApiResponse(code = 404, message = "Movie not found for the given  id") })
 	@PostMapping
 	public ResponseEntity<ResponseStructure<Movie>> saveMovie(@RequestParam long houseId,
-			@RequestBody MovieDto movieDto) {
+			@Valid @RequestBody MovieDto movieDto) {
 		return service.saveMovie(houseId, movieDto);
 	}
 
@@ -55,7 +57,7 @@ public class MovieController {
 			@ApiResponse(code = 404, message = "Movie not found for the given  id") })
 	@PutMapping
 	public ResponseEntity<ResponseStructure<Movie>> updateMovie(@RequestParam long movieId,
-			@RequestBody MovieDto movieDto) {
+			@Valid @RequestBody MovieDto movieDto) {
 		return service.updateMovie(movieId, movieDto);
 	}
 }

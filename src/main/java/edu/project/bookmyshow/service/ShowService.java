@@ -60,6 +60,7 @@ public class ShowService {
 			 * checking if the show run time fits in between the previous and next show
 			 */
 			List<Show> shows = showDao.getShowsIfPresentBetween(show.getShowStartTime(), show.getShowEndTime());
+
 			if (shows.size() == 0) {
 				if (show.getShowStartTime().isBefore(LocalDateTime.now())) {
 					throw new PastDateTimeSpecifiedException("Failed to add show!!");
@@ -69,7 +70,7 @@ public class ShowService {
 						show.setMovieId(movieId);
 						show.setGenre(movie.getGenre1() + ", " + movie.getGenre2() + ", " + movie.getGenre3());
 						show.setLanguage(movie.getLanguage());
-						show.setMovieNaame(movie.getMovieName());
+						show.setMovieName(movie.getMovieName());
 						/**
 						 * get the movie duration in string format and split and use to plus the hours,
 						 * minutes and seconds to the localDateTime so to avoid user entering the wrong
@@ -83,7 +84,7 @@ public class ShowService {
 					Screen screen = screenDao.getScreenById(screenId);
 					if (screen != null) {
 						show.setScreenId(screenId);
-						show.setScreenname(screen.getScreenName());
+						show.setScreenName(screen.getScreenName());
 						show.setTheatre(screen.getTheatre());
 						show.setShowLocation(screen.getTheatre().getAddress().getCity());
 						screen.setScreenAvailability(ScreenAvailability.ALLOTTED);
@@ -153,14 +154,14 @@ public class ShowService {
 							show.setMovieId(movieId);
 							show.setGenre(movie.getGenre1() + ", " + movie.getGenre2() + ", " + movie.getGenre3());
 							show.setLanguage(movie.getLanguage());
-							show.setMovieNaame(movie.getMovieName());
+							show.setMovieName(movie.getMovieName());
 							show.setMovieDuration(movie.getMovieDuration());
 							show.setMovieDescription(movie.getMovieDescription());
 						} else {
 							throw new MovieNotFoundByIdException("Failed to update Show!!");
 						}
 						show.setScreenId(screenId);
-						show.setScreenname(screen.getScreenName());
+						show.setScreenName(screen.getScreenName());
 						show.setTheatre(screen.getTheatre());
 						show.setShowLocation(screen.getTheatre().getAddress().getCity());
 					}
