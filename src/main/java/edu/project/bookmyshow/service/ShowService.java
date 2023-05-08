@@ -1,5 +1,6 @@
 package edu.project.bookmyshow.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -26,9 +27,10 @@ import edu.project.bookmyshow.enums.ShowStatus;
 import edu.project.bookmyshow.enums.TicketStatus;
 import edu.project.bookmyshow.exception.MovieNotFoundByIdException;
 import edu.project.bookmyshow.exception.NullObjectPassedException;
+import edu.project.bookmyshow.exception.PastDateTimeSpecifiedException;
 import edu.project.bookmyshow.exception.ScreenNotFoundByIdException;
-import edu.project.bookmyshow.exception.ShowAlreadyExpiredException;
 import edu.project.bookmyshow.exception.ShowNotFoundByIdException;
+import edu.project.bookmyshow.exception.ShowOnGoingOrClosedException;
 import edu.project.bookmyshow.exception.ShowPresentInRequestedTimeException;
 import edu.project.bookmyshow.exception.ShowsNotFoundForMovieException;
 import edu.project.bookmyshow.exception.ShowsNotFoundInLocationException;
@@ -58,42 +60,53 @@ public class ShowService {
 			 * checking if the show run time fits in between the previous and next show
 			 */
 			List<Show> shows = showDao.getShowsIfPresentBetween(show.getShowStartTime(), show.getShowEndTime());
-			if (shows.size()==0) {
-				Movie movie = movieDao.getMovie(movieId);
-				if (movie != null) {
-					show.setMovieId(movieId);
-					show.setGenre(movie.getGenre1()+", "+movie.getGenre2()+", "+movie.getGenre3());
-					show.setLanguage(movie.getLanguage());
-					show.setMovieName(movie.getMovieName());
-					show.setMovieDuration(movie.getMovieDuration());
-					show.setMovieDescription(movie.getMovieDescription());
+
+			if (shows.size() == 0) {
+				if (show.getShowStartTime().isBefore(LocalDateTime.now())) {
+					throw new PastDateTimeSpecifiedException("Failed to add show!!");
 				} else {
-					throw new MovieNotFoundByIdException("Failed to add Show!!");
+					Movie movie = movieDao.getMovie(movieId);
+					if (movie != null) {
+						show.setMovieId(movieId);
+						show.setGenre(movie.getGenre1() + ", " + movie.getGenre2() + ", " + movie.getGenre3());
+						show.setLanguage(movie.getLanguage());
+						show.setMovieName(movie.getMovieName());
+						/**
+						 * get the movie duration in string format and split and use to plus the hours,
+						 * minutes and seconds to the localDateTime so to avoid user entering the wrong
+						 * show end time.
+						 */
+						show.setMovieDuration(movie.getMovieDuration());
+						show.setMovieDescription(movie.getMovieDescription());
+					} else {
+						throw new MovieNotFoundByIdException("Failed to add Show!!");
+					}
+					Screen screen = screenDao.getScreenById(screenId);
+					if (screen != null) {
+						show.setScreenId(screenId);
+						show.setScreenName(screen.getScreenName());
+						show.setTheatre(screen.getTheatre());
+						show.setShowLocation(screen.getTheatre().getAddress().getCity());
+						screen.setScreenAvailability(ScreenAvailability.ALLOTTED);
+						screen.setScreenstatus(Screenstatus.AVAILABLE);
+						/*
+						 * whenever a ticket is generated to the show, the screen availability should be
+						 * checked & changed.
+						 */
+					} else {
+						throw new ScreenNotFoundByIdException("Failed to add Show!!");
+					}
+					show.setShowStatus(ShowStatus.ACTIVE);
+					/* the show status should be updated using scheduled jobs. */
+					showDao.addShow(show);
+					screenDao.updateScreen(screenId, screen);
+					ResponseStructure<Show> responseStructure = new ResponseStructure<>();
+					responseStructure.setStatus(HttpStatus.CREATED.value());
+					responseStructure.setMessage("Show added Successfully.");
+					responseStructure.setData(show);
+					return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.CREATED);
 				}
-				Screen screen = screenDao.getScreenById(screenId);
-				if (screen != null) {
-					show.setScreenId(screenId);
-					show.setScreenName(screen.getScreenName());
-					show.setTheatre(screen.getTheatre());
-					show.setShowLocation(screen.getTheatre().getAddress().getCity());
-					screen.setScreenAvailability(ScreenAvailability.ALLOTTED);
-					screen.setScreenstatus(Screenstatus.AVAILABLE);
-					/*
-					 * whenever a ticket is generated to the show, the screen availability should be
-					 * checked & changed.
-					 */
-				} else {
-					throw new ScreenNotFoundByIdException("Failed to add Show!!");
-				}
-				show.setShowStatus(ShowStatus.ACTIVE);
-				/* the show status should be updated using scheduled jobs. */
-				showDao.addShow(show);
-				screenDao.updateScreen(screenId, screen);
-				ResponseStructure<Show> responseStructure = new ResponseStructure<>();
-				responseStructure.setStatus(HttpStatus.CREATED.value());
-				responseStructure.setMessage("Show added Successfully.");
-				responseStructure.setData(show);
-				return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.CREATED);
+
 			} else {
 				throw new ShowPresentInRequestedTimeException("Failed to add Show!!");
 			}
@@ -103,8 +116,6 @@ public class ShowService {
 		}
 	}
 
-	
-	
 	public ResponseEntity<ResponseStructure<Show>> getShow(long showId) {
 		Show show = showDao.getShow(showId);
 		if (show != null) {
@@ -118,8 +129,6 @@ public class ShowService {
 		}
 	}
 
-	
-	
 	public ResponseEntity<ResponseStructure<Show>> updadeShow(long showId, ShowDto showDto, long screenId,
 			long movieId) {
 		Show existing = showDao.getShow(showId);
@@ -143,7 +152,7 @@ public class ShowService {
 						Movie movie = movieDao.getMovie(movieId);
 						if (movie != null) {
 							show.setMovieId(movieId);
-							show.setGenre(movie.getGenre1()+", "+movie.getGenre2()+", "+movie.getGenre3());
+							show.setGenre(movie.getGenre1() + ", " + movie.getGenre2() + ", " + movie.getGenre3());
 							show.setLanguage(movie.getLanguage());
 							show.setMovieName(movie.getMovieName());
 							show.setMovieDuration(movie.getMovieDuration());
@@ -176,13 +185,13 @@ public class ShowService {
 	}
 
 	/**
-	 * check if the showStatus is already being cancelled,
-	 * check the booking status, do not update to expired 
-	 * if already cancelled*/
+	 * check if the showStatus is already being cancelled, check the booking status,
+	 * do not update to expired if already cancelled
+	 */
 	public ResponseEntity<ResponseStructure<Show>> cancelShow(long showId) {
 		Show show = showDao.getShow(showId);
 		if (show != null) {
-			if(show.getShowStatus().equals(ShowStatus.ACTIVE)) {
+			if (show.getShowStatus().equals(ShowStatus.ACTIVE)) {
 				Screen screen = screenDao.getScreenById(show.getScreenId());
 				screen.setScreenstatus(Screenstatus.AVAILABLE);
 				screen.setScreenAvailability(ScreenAvailability.NOT_ALLOTTED);
@@ -207,55 +216,52 @@ public class ShowService {
 				responseStructure.setMessage("Show Cancelled Successfully.");
 				responseStructure.setData(show);
 				return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.OK);
-			}else
-				throw new ShowAlreadyExpiredException("Failed to Cancel Show!!");
+			} else
+				throw new ShowOnGoingOrClosedException("Failed to Cancel Show!!");
 
-		}else {
+		} else {
 			throw new ShowNotFoundByIdException("Failed to Cancel Show!!");
 		}
 
 	}
 
-
-
-	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByCity(String city) {
-		List<Show> shows = showDao.getShowsByCity(city);
-		if(shows!=null) {
-			if(shows.isEmpty()) {
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByCity(String city, ShowStatus showStatus) {
+		List<Show> shows = showDao.getShowsByCity(city, showStatus);
+		if (shows != null) {
+			if (shows.isEmpty()) {
 				throw new ShowsNotFoundInLocationException("Failed to find Shows!!");
-			}else {
-			ResponseStructure<List<Show>> responseStructure = new ResponseStructure<>();
-			responseStructure.setStatus(HttpStatus.FOUND.value());
-			responseStructure.setMessage("Shows Found.");
-			responseStructure.setData(shows);
-			return new ResponseEntity<ResponseStructure<List<Show>>>(responseStructure, HttpStatus.FOUND);	
-			}
-		}else {
-			throw new ShowsNotFoundInLocationException("Failed to find Shows!!");
-		}
-	}
-	
-	
-	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByMovieId(long movieId) {
-		Movie movie= movieDao.getMovie(movieId);
-		if(movie!=null) {
-			List<Show> shows = showDao.getShowsByMovieId(movieId);
-			if(shows!=null) {
-				if(shows.isEmpty()) {
-					throw new ShowsNotFoundInLocationException("Failed to find Shows!!");
-				}else {
+			} else {
 				ResponseStructure<List<Show>> responseStructure = new ResponseStructure<>();
 				responseStructure.setStatus(HttpStatus.FOUND.value());
 				responseStructure.setMessage("Shows Found.");
 				responseStructure.setData(shows);
-				return new ResponseEntity<ResponseStructure<List<Show>>>(responseStructure, HttpStatus.FOUND);	
-				}			
-			}else {
+				return new ResponseEntity<ResponseStructure<List<Show>>>(responseStructure, HttpStatus.FOUND);
+			}
+		} else {
+			throw new ShowsNotFoundInLocationException("Failed to find Shows!!");
+		}
+	}
+
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByMovieId(long movieId, ShowStatus showStatus) {
+		Movie movie = movieDao.getMovie(movieId);
+		if (movie != null) {
+			List<Show> shows = showDao.getShowsByMovieId(movieId, showStatus);
+			if (shows != null) {
+				if (shows.isEmpty()) {
+					throw new ShowsNotFoundInLocationException("Failed to find Shows!!");
+				} else {
+					ResponseStructure<List<Show>> responseStructure = new ResponseStructure<>();
+					responseStructure.setStatus(HttpStatus.FOUND.value());
+					responseStructure.setMessage("Shows Found.");
+					responseStructure.setData(shows);
+					return new ResponseEntity<ResponseStructure<List<Show>>>(responseStructure, HttpStatus.FOUND);
+				}
+			} else {
 				throw new ShowsNotFoundForMovieException("Failed to find Shows!!");
 			}
-		}else
+		} else
 			throw new MovieNotFoundByIdException("Failed to find shows!!");
-		
+
 	}
 
 }

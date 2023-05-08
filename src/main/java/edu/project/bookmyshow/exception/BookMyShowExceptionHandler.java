@@ -153,6 +153,15 @@ public class BookMyShowExceptionHandler  extends ResponseEntityExceptionHandler 
 	}
 	
 	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> PastDateTimeSpecified(PastDateTimeSpecifiedException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.BAD_REQUEST.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("The Date or Time specified is invalid!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
 	public ResponseEntity<ResponseStructure<String>> ShowsNotFoundInLocation(ShowsNotFoundInLocationException ex){
 		ResponseStructure<String> structure = new ResponseStructure<>();
 		structure.setStatus(HttpStatus.NOT_FOUND.value());
