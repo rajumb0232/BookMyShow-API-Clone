@@ -41,6 +41,9 @@ public class TicketController {
 		return ticketService.getTicket(ticketId);
 	}
 
+	@ApiOperation(value = "Cancel Ticket", notes = " Api is used to cancel the ticket")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully cancelled"),
+			@ApiResponse(code = 404, message = "Ticket not found for the given  id") })
 	@PutMapping
 	public ResponseEntity<ResponseStructure<Ticket>> cancelTicket(@RequestParam long ticketId) {
 		return ticketService.cancelTicket(ticketId);
