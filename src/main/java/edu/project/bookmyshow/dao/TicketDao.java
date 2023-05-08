@@ -33,6 +33,15 @@ public class TicketDao {
 	public Ticket cancelTicket(Ticket ticket) {
 		return ticketRepo.save(ticket);
 	}
+
+	public Ticket getTicket(long ticketId) {
+		Optional<Ticket> optional = ticketRepo.findById(ticketId);
+		if(optional.isEmpty()) {
+			return null;
+		}else {
+			return optional.get();
+		}
+	}
 	
 	
 }

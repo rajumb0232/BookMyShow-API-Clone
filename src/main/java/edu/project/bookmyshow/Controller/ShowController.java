@@ -1,11 +1,14 @@
 package edu.project.bookmyshow.Controller;
 
 import javax.validation.Valid;
+import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,5 +44,20 @@ public class ShowController {
 	@GetMapping
 	public ResponseEntity<ResponseStructure<Show>> getShow(@RequestParam long showId) {
 		return showService.getShow(showId);
+	}
+	
+	@GetMapping("/city")
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByCity(@RequestParam String city){
+		return showService.getShowsByCity(city);
+	}
+	
+	@GetMapping("/movie")
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByMovieId(@RequestParam long movieId){
+		return showService.getShowsByMovieId(movieId);
+	}
+	
+	@PutMapping("/cancel")
+	public ResponseEntity<ResponseStructure<Show>> cancelShow(@RequestParam long showId){
+		return showService.cancelShow(showId);
 	}
 }

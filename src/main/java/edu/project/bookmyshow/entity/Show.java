@@ -15,7 +15,6 @@ import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import edu.project.bookmyshow.enums.Genre;
 import edu.project.bookmyshow.enums.ShowStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +36,7 @@ public class Show {
 	private long movieId;
 	@Pattern(regexp = "[A-Z]{1}[a-z]*",message = "Name should start with Capital Letter")
 	private String movieName;
-	private Genre genre;
+	private String genre;
 	private LocalTime movieDuration;
 	private String movieDescription;
 	@Pattern(regexp = "[A-Z]{1}[a-z]*",message = "Name should start with Capital Letter")

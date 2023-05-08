@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.project.bookmyshow.dao.AddressDao;
 import edu.project.bookmyshow.dto.AddressDto;
-import edu.project.bookmyshow.entity.Address;
-import edu.project.bookmyshow.entity.Theatre;
 import edu.project.bookmyshow.service.AddressService;
 import edu.project.bookmyshow.util.ResponseStructure;
 import io.swagger.annotations.ApiOperation;
