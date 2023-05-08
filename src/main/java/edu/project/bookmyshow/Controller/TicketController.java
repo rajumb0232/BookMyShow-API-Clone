@@ -1,7 +1,5 @@
 package edu.project.bookmyshow.Controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +27,8 @@ public class TicketController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Ticket not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(@Valid
-			@RequestParam long customerId, @RequestParam long showId, @RequestParam Long[] seatId){
+	public ResponseEntity<ResponseStructure<Ticket>> bookTicket(@RequestParam long customerId,
+			@RequestParam long showId, @RequestParam Long[] seatId) {
 
 		return ticketService.bookTicket(customerId, showId, seatId);
 	}
@@ -42,9 +40,9 @@ public class TicketController {
 	public ResponseEntity<ResponseStructure<Ticket>> getTicket(@RequestParam long ticketId) {
 		return ticketService.getTicket(ticketId);
 	}
-	
+
 	@PutMapping
-	public ResponseEntity<ResponseStructure<Ticket>> cancelTicket(@RequestParam long ticketId){
+	public ResponseEntity<ResponseStructure<Ticket>> cancelTicket(@RequestParam long ticketId) {
 		return ticketService.cancelTicket(ticketId);
 	}
 }

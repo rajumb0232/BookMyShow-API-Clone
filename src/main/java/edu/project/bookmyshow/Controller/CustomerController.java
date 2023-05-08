@@ -32,7 +32,7 @@ public class CustomerController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Customer not found for the given id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<CustomerDto>> saveCustomer(@Valid@RequestBody Customer customer) {
+	public ResponseEntity<ResponseStructure<CustomerDto>> saveCustomer(@Valid @RequestBody Customer customer) {
 		return customerService.saveCustomer(customer);
 	}
 
@@ -56,8 +56,8 @@ public class CustomerController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "Customer not found for the given  id") })
 	@PutMapping
-	public ResponseEntity<ResponseStructure<CustomerDto>> updateCustomer(@Valid@RequestParam long customerId,
-			@RequestBody Customer customer) {
+	public ResponseEntity<ResponseStructure<CustomerDto>> updateCustomer(@RequestParam long customerId,
+			@Valid @RequestBody Customer customer) {
 		return customerService.updateCustomer(customerId, customer);
 	}
 

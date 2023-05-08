@@ -1,7 +1,5 @@
 package edu.project.bookmyshow.Controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +40,7 @@ public class AddressController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully deleted"),
 			@ApiResponse(code = 404, message = "Address not found for the given  id") })
 	@DeleteMapping
-	public ResponseEntity<ResponseStructure<AddressDto>> deleteAddress( @RequestParam long addressId) {
+	public ResponseEntity<ResponseStructure<AddressDto>> deleteAddress(@RequestParam long addressId) {
 		return addressService.deleteAddress(addressId);
 	}
 
@@ -50,8 +48,8 @@ public class AddressController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "Address not found for the given  id") })
 	@PutMapping
-	public ResponseEntity<ResponseStructure<AddressDto>> updateAddress(@Valid @RequestParam long addressId,
-			@RequestBody AddressDto addressDto) {
+	public ResponseEntity<ResponseStructure<AddressDto>> updateAddress(@RequestParam long addressId,
+			@Valid @RequestBody AddressDto addressDto) {
 		return addressService.updateAddress(addressId, addressDto);
 	}
 
@@ -59,7 +57,7 @@ public class AddressController {
 	@ApiResponses(value = { @ApiResponse(code = 302, message = "Successfully fetched"),
 			@ApiResponse(code = 404, message = "Address not found for the given  id") })
 	@GetMapping
-	public ResponseEntity<ResponseStructure<AddressDto>> getAddressById( @RequestParam long addressId) {
+	public ResponseEntity<ResponseStructure<AddressDto>> getAddressById(@RequestParam long addressId) {
 		return addressService.getAddressById(addressId);
 	}
 

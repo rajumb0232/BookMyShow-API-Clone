@@ -56,8 +56,8 @@ public class OwnerControllor {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "Owner not found for the given  id") })
 	@PutMapping
-	public ResponseEntity<ResponseStructure<OwnerDto>> updateOwner(@Valid@RequestParam long ownerId,
-			@RequestBody Owner owner) {
+	public ResponseEntity<ResponseStructure<OwnerDto>> updateOwner(@RequestParam long ownerId,
+			@Valid @RequestBody Owner owner) {
 		return ownerService.updateOwner(ownerId, owner);
 	}
 

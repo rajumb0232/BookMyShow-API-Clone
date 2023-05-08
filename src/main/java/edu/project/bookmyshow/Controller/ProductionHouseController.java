@@ -31,8 +31,8 @@ public class ProductionHouseController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "ProductionHouse not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<ProductionHouse>> saveProductionHouse(@Valid@RequestParam long ownerId,
-			@RequestBody ProductionHouseDto houseDto) {
+	public ResponseEntity<ResponseStructure<ProductionHouse>> saveProductionHouse(@RequestParam long ownerId,
+			@Valid @RequestBody ProductionHouseDto houseDto) {
 		return houseService.saveProductionHouse(ownerId, houseDto);
 	}
 
@@ -40,8 +40,8 @@ public class ProductionHouseController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "ProductionHouse not found for the given  id") })
 	@PutMapping
-	public ResponseEntity<ResponseStructure<ProductionHouse>> updateProductionHouse(@Valid@RequestParam long houseId,
-			@RequestBody ProductionHouseDto dto) {
+	public ResponseEntity<ResponseStructure<ProductionHouse>> updateProductionHouse(@RequestParam long houseId,
+			@Valid @RequestBody ProductionHouseDto dto) {
 		return houseService.updateProductionHouse(houseId, dto);
 	}
 

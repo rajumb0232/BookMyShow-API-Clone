@@ -27,7 +27,6 @@ public class Ticket {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ticketId;
 	private double totalPrice;
-	@Pattern(regexp = "[A-Z]{1}[a-z]*",message = "Name should start with Capital Letter")
 	private TicketStatus ticketStatus;
 	
 	@ManyToOne

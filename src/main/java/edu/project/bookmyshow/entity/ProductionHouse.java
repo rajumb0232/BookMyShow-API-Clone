@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,7 +27,9 @@ public class ProductionHouse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long productionId;
-	@Pattern(regexp = "[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*", message = "Name should start with capital letter and should not be given space in the begining and last")
+	@NotBlank(message = "ProductionName cannot be blank")
+	@NotNull(message = "ProductionName cannot be null")
+	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String productionName;
 	private LocalDate establishment;
 	

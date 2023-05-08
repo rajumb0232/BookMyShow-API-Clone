@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,7 +28,9 @@ public class Theatre {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long theatreId;
-	@Pattern(regexp = "[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*\\s*[A-Z]{1}[a-z]*", message = "Name should start with capital letter and should not be given space in the begining and last")
+	@NotBlank(message = "theatreName cannot be blank")
+	@NotNull(message = "theatreName cannot be null")
+	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String theatreName;
 	
 	@OneToOne 

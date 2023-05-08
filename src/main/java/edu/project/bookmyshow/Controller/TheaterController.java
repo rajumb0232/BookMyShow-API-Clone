@@ -31,8 +31,8 @@ public class TheaterController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Theatre not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<Theatre>> addTheatre(@Valid@RequestParam long ownerId,
-			@RequestBody TheatreDto dto) {
+	public ResponseEntity<ResponseStructure<Theatre>> addTheatre(@RequestParam long ownerId,
+			@Valid @RequestBody TheatreDto dto) {
 		return service.addTheatre(ownerId, dto);
 	}
 
@@ -40,8 +40,8 @@ public class TheaterController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "Theatre not found for the given  id") })
 	@PutMapping
-	public ResponseEntity<ResponseStructure<Theatre>> updateTheatre(@Valid@RequestParam long theaterId,
-			@RequestBody TheatreDto dto) {
+	public ResponseEntity<ResponseStructure<Theatre>> updateTheatre(@RequestParam long theaterId,
+			@Valid @RequestBody TheatreDto dto) {
 		return service.updateTheatre(theaterId, dto);
 	}
 

@@ -31,8 +31,8 @@ public class MovieController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Movie not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<Movie>> saveMovie(@Valid@RequestParam long houseId,
-			@RequestBody MovieDto movieDto) {
+	public ResponseEntity<ResponseStructure<Movie>> saveMovie(@RequestParam long houseId,
+			@Valid @RequestBody MovieDto movieDto) {
 		return service.saveMovie(houseId, movieDto);
 	}
 
@@ -56,8 +56,8 @@ public class MovieController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "Movie not found for the given  id") })
 	@PutMapping
-	public ResponseEntity<ResponseStructure<Movie>> updateMovie(@Valid@RequestParam long movieId,
-			@RequestBody MovieDto movieDto) {
+	public ResponseEntity<ResponseStructure<Movie>> updateMovie(@RequestParam long movieId,
+			@Valid @RequestBody MovieDto movieDto) {
 		return service.updateMovie(movieId, movieDto);
 	}
 }

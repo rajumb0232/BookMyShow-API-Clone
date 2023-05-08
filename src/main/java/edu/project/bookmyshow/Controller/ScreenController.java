@@ -31,8 +31,8 @@ public class ScreenController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Screen not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<ScreenDto>> saveScreen(@Valid@RequestParam long theatreId,
-			@RequestBody ScreenDto screenDto) {
+	public ResponseEntity<ResponseStructure<ScreenDto>> saveScreen(@RequestParam long theatreId,
+			@Valid @RequestBody ScreenDto screenDto) {
 		return screenService.saveScreen(theatreId, screenDto);
 	}
 
@@ -40,8 +40,8 @@ public class ScreenController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "Screen not found for the given  id") })
 	@PutMapping
-	public ResponseEntity<ResponseStructure<ScreenDto>> updateScreen(@Valid@RequestParam long screenId,
-			@RequestBody ScreenDto screenDto) {
+	public ResponseEntity<ResponseStructure<ScreenDto>> updateScreen(@RequestParam long screenId,
+			@Valid @RequestBody ScreenDto screenDto) {
 		return screenService.updateScreen(screenId, screenDto);
 	}
 
