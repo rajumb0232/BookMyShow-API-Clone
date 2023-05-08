@@ -1,5 +1,6 @@
 package edu.project.bookmyshow.Controller;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ public class ShowController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Show not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<Show>> addShow(@RequestBody ShowDto showDto, @RequestParam long movieId,
-			@RequestParam long screenId) {
+	public ResponseEntity<ResponseStructure<Show>> addShow(@Valid @RequestBody ShowDto showDto,
+			@RequestParam long movieId, @RequestParam long screenId) {
 		return showService.addShow(showDto, movieId, screenId);
 	}
 
@@ -60,11 +61,12 @@ public class ShowController {
 	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByMovieId(@RequestParam long movieId, @RequestParam  ShowStatus showStatus){
 		return showService.getShowsByMovieId(movieId, showStatus);
 	}
+
 	@ApiOperation(value = "Cancel Screen", notes = " Api is used to cancel the Show")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully cancelled"),
 			@ApiResponse(code = 404, message = "Show not found for the given  id") })
 	@PutMapping("/cancel")
-	public ResponseEntity<ResponseStructure<Show>> cancelShow(@RequestParam long showId){
+	public ResponseEntity<ResponseStructure<Show>> cancelShow(@RequestParam long showId) {
 		return showService.cancelShow(showId);
 	}
 }
