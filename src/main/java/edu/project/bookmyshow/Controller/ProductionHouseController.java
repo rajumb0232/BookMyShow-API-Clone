@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.Controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +31,7 @@ public class ProductionHouseController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "ProductionHouse not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<ProductionHouse>> saveProductionHouse(@RequestParam long ownerId,
+	public ResponseEntity<ResponseStructure<ProductionHouse>> saveProductionHouse(@Valid@RequestParam long ownerId,
 			@RequestBody ProductionHouseDto houseDto) {
 		return houseService.saveProductionHouse(ownerId, houseDto);
 	}
@@ -38,7 +40,7 @@ public class ProductionHouseController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "ProductionHouse not found for the given  id") })
 	@PutMapping
-	public ResponseEntity<ResponseStructure<ProductionHouse>> updateProductionHouse(@RequestParam long houseId,
+	public ResponseEntity<ResponseStructure<ProductionHouse>> updateProductionHouse(@Valid@RequestParam long houseId,
 			@RequestBody ProductionHouseDto dto) {
 		return houseService.updateProductionHouse(houseId, dto);
 	}

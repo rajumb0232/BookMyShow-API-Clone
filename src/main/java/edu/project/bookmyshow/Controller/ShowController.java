@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.Controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +30,7 @@ public class ShowController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Show not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<Show>> addShow(@RequestBody ShowDto showDto, @RequestParam long movieId,
+	public ResponseEntity<ResponseStructure<Show>> addShow(@Valid@RequestBody ShowDto showDto, @RequestParam long movieId,
 			@RequestParam long screenId) {
 		return showService.addShow(showDto, movieId, screenId);
 	}

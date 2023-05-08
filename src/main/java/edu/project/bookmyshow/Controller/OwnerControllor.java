@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.Controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class OwnerControllor {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Owner not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<OwnerDto>> saveOwner(@RequestBody Owner owner) {
+	public ResponseEntity<ResponseStructure<OwnerDto>> saveOwner(@Valid @RequestBody Owner owner) {
 		return ownerService.saveOwner(owner);
 	}
 
@@ -55,7 +57,7 @@ public class OwnerControllor {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Updated"),
 			@ApiResponse(code = 404, message = "Owner not found for the given  id") })
 	@PutMapping
-	public ResponseEntity<ResponseStructure<OwnerDto>> updateOwner(@RequestParam long ownerId,
+	public ResponseEntity<ResponseStructure<OwnerDto>> updateOwner(@Valid@RequestParam long ownerId,
 			@RequestBody Owner owner) {
 		return ownerService.updateOwner(ownerId, owner);
 	}

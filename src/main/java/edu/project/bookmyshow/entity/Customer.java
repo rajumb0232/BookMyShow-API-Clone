@@ -27,7 +27,7 @@ public class Customer {
 	@Min(6000000000l)
 	@Max(9999999999l)
 	private long customrPhoneNumber;
-	@Email(regexp = "[a-zA-Z0-9+_.-]+@[gmail]+.[com]{3}", message = "invalid email--Should be in the extension of 'gmail.com' ")
+	@Email(regexp = "[a-zA-Z0-9+_.-]+@[g][m][a][i][l]+.[c][o][m]", message = "invalid email--Should be in the extension of 'gmail.com' ")
 	private String customerEmail;
 	@Pattern(regexp = "(?=.*[0-9])+(?=.*[a-z])+(?=.*[A-Z])+(?=.*[@#$%^&+=])+(?=\\S+$).{8}", message = "8 characters mandatory(1 upperCase,1 lowerCase,1 specialCharacter,1 number)")
 	private String customerPassword;
