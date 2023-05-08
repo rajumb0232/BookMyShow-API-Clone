@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.Controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +31,7 @@ public class AddressController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Address not found for the given  id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<AddressDto>> saveAddress(@RequestBody AddressDto addressDto,
+	public ResponseEntity<ResponseStructure<AddressDto>> saveAddress(@Valid @RequestBody AddressDto addressDto,
 			@RequestParam long theatreId) {
 		return addressService.saveAddress(addressDto, theatreId);
 	}
@@ -47,7 +49,7 @@ public class AddressController {
 			@ApiResponse(code = 404, message = "Address not found for the given  id") })
 	@PutMapping
 	public ResponseEntity<ResponseStructure<AddressDto>> updateAddress(@RequestParam long addressId,
-			@RequestBody AddressDto addressDto) {
+			@Valid @RequestBody AddressDto addressDto) {
 		return addressService.updateAddress(addressId, addressDto);
 	}
 

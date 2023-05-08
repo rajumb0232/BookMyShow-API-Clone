@@ -1,5 +1,7 @@
 package edu.project.bookmyshow.Controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +32,7 @@ public class ScreenController {
 			@ApiResponse(code = 404, message = "Screen not found for the given  id") })
 	@PostMapping
 	public ResponseEntity<ResponseStructure<ScreenDto>> saveScreen(@RequestParam long theatreId,
-			@RequestBody ScreenDto screenDto) {
+			@Valid @RequestBody ScreenDto screenDto) {
 		return screenService.saveScreen(theatreId, screenDto);
 	}
 
@@ -39,7 +41,7 @@ public class ScreenController {
 			@ApiResponse(code = 404, message = "Screen not found for the given  id") })
 	@PutMapping
 	public ResponseEntity<ResponseStructure<ScreenDto>> updateScreen(@RequestParam long screenId,
-			@RequestBody ScreenDto screenDto) {
+			@Valid @RequestBody ScreenDto screenDto) {
 		return screenService.updateScreen(screenId, screenDto);
 	}
 

@@ -85,7 +85,7 @@ public class TicketService {
 					booking.setBookingStatus(BookingStatus.ACTIVE);
 					booking.setBookedFromTime(show.getShowStartTime());
 					booking.setBookedTillTime(show.getShowEndTime());
-
+					
 					SeatType seatType = booking.getSeatType();
 					switch (seatType) {
 					case CLASSIC:
