@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import edu.project.bookmyshow.enums.Genre;
 import edu.project.bookmyshow.enums.ShowStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +30,7 @@ public class Show {
 	
 	private long movieId;
 	private String movieNaame;
-	private Genre genre;
+	private String genre;
 	private LocalTime movieDuration;
 	private String movieDescription;
 	private String language;
