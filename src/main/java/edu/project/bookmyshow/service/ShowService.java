@@ -171,10 +171,10 @@ public class ShowService {
 				show.setShowStatus(existing.getShowStatus());
 				showDao.addShow(show);
 				ResponseStructure<Show> responseStructure = new ResponseStructure<>();
-				responseStructure.setStatus(HttpStatus.CREATED.value());
+				responseStructure.setStatus(HttpStatus.OK.value());
 				responseStructure.setMessage("Show updated Successfully.");
 				responseStructure.setData(show);
-				return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.CREATED);
+				return new ResponseEntity<ResponseStructure<Show>>(responseStructure, HttpStatus.OK);
 			} else {
 				throw new ShowPresentInRequestedTimeException("Failed to update Show!!");
 			}
@@ -260,7 +260,6 @@ public class ShowService {
 			}
 		} else
 			throw new MovieNotFoundByIdException("Failed to find shows!!");
-
 	}
 
 }
