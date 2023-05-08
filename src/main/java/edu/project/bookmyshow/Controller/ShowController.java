@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.project.bookmyshow.dto.ShowDto;
 import edu.project.bookmyshow.entity.Show;
+import edu.project.bookmyshow.enums.ShowStatus;
 import edu.project.bookmyshow.service.ShowService;
 import edu.project.bookmyshow.util.ResponseStructure;
 import io.swagger.annotations.ApiOperation;
@@ -45,13 +46,13 @@ public class ShowController {
 	}
 	
 	@GetMapping("/city")
-	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByCity(@RequestParam String city){
-		return showService.getShowsByCity(city);
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByCity(@RequestParam String city, @RequestParam  ShowStatus showStatus){
+		return showService.getShowsByCity(city, showStatus);
 	}
 	
 	@GetMapping("/movie")
-	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByMovieId(@RequestParam long movieId){
-		return showService.getShowsByMovieId(movieId);
+	public ResponseEntity<ResponseStructure<List<Show>>> getShowsByMovieId(@RequestParam long movieId, @RequestParam  ShowStatus showStatus){
+		return showService.getShowsByMovieId(movieId, showStatus);
 	}
 	
 	@PutMapping("/cancel")

@@ -47,8 +47,8 @@ public class ShowDao {
 		return showRepo.save(show);
 	}
 	
-	public List<Show> getShowsByCity(String city){
-		Optional<List<Show>> optional = showRepo.getShowsByCity(city);
+	public List<Show> getShowsByCity(String city, ShowStatus showStatus){
+		Optional<List<Show>> optional = showRepo.getShowsByCity(city, showStatus);
 		if(optional.isEmpty()) {
 			return null;
 		}else {
@@ -56,8 +56,8 @@ public class ShowDao {
 		}
 	}
 	
-	public List<Show> getShowsByMovieId(long movieId){
-		Optional<List<Show>> optional = showRepo.getShowsByMovieId(movieId);
+	public List<Show> getShowsByMovieId(long movieId, ShowStatus showStatus){
+		Optional<List<Show>> optional = showRepo.getShowsByMovieId(movieId, showStatus);
 		if(optional.isEmpty()) {
 			return null;
 		}else {
