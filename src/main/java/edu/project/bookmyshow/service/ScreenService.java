@@ -180,7 +180,7 @@ public class ScreenService {
 		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();
 		Screen screen = screenDao.deleteScreen(screenId);
 		if (screen != null) {
-			responseStructure.setMessage("address deleted successfully");
+			responseStructure.setMessage("Screen deleted successfully");
 			responseStructure.setStatus(HttpStatus.OK.value());
 			responseStructure.setData(screen);
 			return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.OK);
@@ -193,7 +193,7 @@ public class ScreenService {
 		ResponseStructure<ScreenDto> responseStructure = new ResponseStructure<>();
 		Screen screen = screenDao.getScreenById(screenId);
 		if (screen != null) {
-			responseStructure.setMessage("address fetched successfully");
+			responseStructure.setMessage("screen fetched successfully");
 			responseStructure.setStatus(HttpStatus.FOUND.value());
 			responseStructure.setData(screen);
 			return new ResponseEntity<ResponseStructure<ScreenDto>>(responseStructure, HttpStatus.FOUND);

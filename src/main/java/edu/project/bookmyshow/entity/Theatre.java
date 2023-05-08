@@ -38,7 +38,7 @@ public class Theatre {
 	private Address address;
 	
 	@OneToMany(mappedBy = "theatre",fetch = FetchType.EAGER)
-	//@JsonIgnore
+	@JsonIgnore
 	private List<Screen> screens;
 	
 	@ManyToOne 
