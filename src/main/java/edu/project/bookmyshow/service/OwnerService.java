@@ -46,8 +46,7 @@ public class OwnerService {
 			structure.setStatus(HttpStatus.FOUND.value());
 			structure.setData(dto);
 			return new ResponseEntity<ResponseStructure<OwnerDto>>(structure, HttpStatus.FOUND);
-		}
-		else {
+		} else {
 			throw new OwnerNotFoundByIdException("Failed to fetch Owner!!");
 		}
 	}
@@ -67,8 +66,8 @@ public class OwnerService {
 			return new ResponseEntity<ResponseStructure<OwnerDto>>(structure, HttpStatus.OK);
 		}
 
-			throw new OwnerNotFoundByIdException("Failed to delete Owner!!");
-		
+		throw new OwnerNotFoundByIdException("Failed to delete Owner!!");
+
 	}
 
 	public ResponseEntity<ResponseStructure<OwnerDto>> updateOwner(long ownerId, Owner owner2) {
@@ -84,8 +83,7 @@ public class OwnerService {
 			structure.setStatus(HttpStatus.OK.value());
 			structure.setData(dto);
 			return new ResponseEntity<ResponseStructure<OwnerDto>>(structure, HttpStatus.OK);
-		}
-		else {
+		} else {
 			throw new OwnerNotFoundByIdException("Failed to update Owner!!");
 		}
 	}

@@ -12,9 +12,7 @@ public class BookMyShowCloneApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BookMyShowCloneApplication.class, args);
-
 	}
-
 	@Bean
 	public ModelMapper getMapper() {
 		return new ModelMapper();
