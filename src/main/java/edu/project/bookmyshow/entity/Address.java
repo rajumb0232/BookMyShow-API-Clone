@@ -1,4 +1,4 @@
-package edu.project.bookmyshow.entity;
+ package edu.project.bookmyshow.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

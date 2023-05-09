@@ -28,16 +28,16 @@ public class Customer {
 	@NotNull(message = "Customer cannot be null")
 	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String customerName;
-	@Min(value =  6000000000l, message = "PhoneNumber should start with these digits[6,7,8,9]")
-	@Max(value =  9999999999l, message = "PhoneNumber must be 10 digits")
-	private long customrPhoneNumber;
+	@Min(value = 6000000000l, message = "PhoneNumber should start with these digits[6,7,8,9] and should be 10 digits")
+	@Max(value = 9999999999l, message = "PhoneNumber must be 10 digits")
+	private long customerPhoneNumber;
 	@NotBlank(message = "Customer cannot be blank")
 	@NotNull(message = "Customer cannot be null")
 	@Email(regexp = "[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}", message = "invalid email ")
 	private String customerEmail;
 	@NotBlank(message = "Customer cannot be blank")
 	@NotNull(message = "Customer cannot be null")
-	@Pattern(regexp = "(?=.*[0-9])+(?=.*[a-z])+(?=.*[A-Z])+(?=.*[@#$%^&+=])+(?=\\S+$).{8,}", message = "8 characters mandatory(1 upperCase,1 lowerCase,1 specialCharacter,1 number)")
+	@Pattern(regexp = "(?=.*[0-9])+(?=.*[a-z])+(?=.*[A-Z])+(?=.*[@#$%^&+=])+(?=\\S+$).{8,}", message = "minimum 8 characters mandatory(1 upperCase,1 lowerCase,1 specialCharacter,1 number)")
 	private String customerPassword;
 	@OneToMany(mappedBy = "customer")
 	private List<Ticket> tickets;

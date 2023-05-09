@@ -14,7 +14,7 @@ public class ScreenDto {
 	private long screenId;
 	@NotBlank(message = "screenName cannot be blank")
 	@NotNull(message = "screenName cannot be null")
-	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
+	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "ScreenName should Start with capital letter")
 	private String screenName;
 	private ScreenType screenType;
 	private int numberOfClassicSeat;
