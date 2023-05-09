@@ -17,7 +17,9 @@ import edu.project.bookmyshow.dto.CustomerDto;
 import edu.project.bookmyshow.entity.Customer;
 import edu.project.bookmyshow.service.CustomerService;
 import edu.project.bookmyshow.util.ResponseStructure;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -27,12 +29,13 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerService customerService;
-
+	
+	@ApiModelProperty(required = true)
 	@ApiOperation(value = "Save Customer", notes = " Api is used to save the Customer")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Customer not found for the given id") })
 	@PostMapping
-	public ResponseEntity<ResponseStructure<CustomerDto>> saveCustomer(@Valid @RequestBody Customer customer) {
+	public ResponseEntity<ResponseStructure<CustomerDto>> saveCustomer(@ApiParam(required = true) @Valid @RequestBody Customer customer) {
 		return customerService.saveCustomer(customer);
 	}
 

@@ -1,6 +1,7 @@
 package edu.project.bookmyshow.service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import edu.project.bookmyshow.dao.ScreenDao;
 import edu.project.bookmyshow.dao.ShowDao;
 import edu.project.bookmyshow.dao.TicketDao;
 import edu.project.bookmyshow.dto.ShowDto;
+import edu.project.bookmyshow.entity.Address;
 import edu.project.bookmyshow.entity.Booking;
 import edu.project.bookmyshow.entity.Movie;
 import edu.project.bookmyshow.entity.Screen;
@@ -25,6 +27,7 @@ import edu.project.bookmyshow.enums.ScreenAvailability;
 import edu.project.bookmyshow.enums.Screenstatus;
 import edu.project.bookmyshow.enums.ShowStatus;
 import edu.project.bookmyshow.enums.TicketStatus;
+import edu.project.bookmyshow.exception.AddressIsNullException;
 import edu.project.bookmyshow.exception.MovieNotFoundByIdException;
 import edu.project.bookmyshow.exception.NullObjectPassedException;
 import edu.project.bookmyshow.exception.PastDateTimeSpecifiedException;
@@ -66,27 +69,39 @@ public class ShowService {
 					throw new PastDateTimeSpecifiedException("Failed to add show!!");
 				} else {
 					Movie movie = movieDao.getMovie(movieId);
-					if (movie != null) {
+					System.out.println(movie.getLanguage());
+					if (movie.equals(null)) {
+						throw new MovieNotFoundByIdException("Failed to add Show!!");
+					} else {
 						show.setMovieId(movieId);
 						show.setGenre(movie.getGenre1() + ", " + movie.getGenre2() + ", " + movie.getGenre3());
 						show.setLanguage(movie.getLanguage());
 						show.setMovieName(movie.getMovieName());
-						/**
-						 * get the movie duration in string format and split and use to plus the hours,
-						 * minutes and seconds to the localDateTime so to avoid user entering the wrong
-						 * show end time.
-						 */
+						
+						 LocalDateTime endTime = show.getShowStartTime();
+						 LocalTime runTime = movie.getMovieDuration();
+						 
+						 endTime = endTime.plusHours(runTime.getHour());
+						 endTime = endTime.plusMinutes(runTime.getMinute());
+						 endTime = endTime.plusSeconds(runTime.getSecond());
+						
+						show.setShowEndTime(endTime);
 						show.setMovieDuration(movie.getMovieDuration());
 						show.setMovieDescription(movie.getMovieDescription());
-					} else {
-						throw new MovieNotFoundByIdException("Failed to add Show!!");
 					}
+					
 					Screen screen = screenDao.getScreenById(screenId);
 					if (screen != null) {
 						show.setScreenId(screenId);
 						show.setScreenName(screen.getScreenName());
 						show.setTheatre(screen.getTheatre());
-						show.setShowLocation(screen.getTheatre().getAddress().getCity());
+						Address address = screen.getTheatre().getAddress();
+						if(address!=null) {
+							show.setShowLocation(address.getCity());
+						}else {
+							throw new AddressIsNullException("Failed to add Show!!");
+						}
+						
 						screen.setScreenAvailability(ScreenAvailability.ALLOTTED);
 						screen.setScreenstatus(Screenstatus.AVAILABLE);
 						/*
@@ -116,6 +131,7 @@ public class ShowService {
 		}
 	}
 
+	
 	public ResponseEntity<ResponseStructure<Show>> getShow(long showId) {
 		Show show = showDao.getShow(showId);
 		if (show != null) {
@@ -129,6 +145,7 @@ public class ShowService {
 		}
 	}
 
+	
 	public ResponseEntity<ResponseStructure<Show>> updadeShow(long showId, ShowDto showDto, long screenId,
 			long movieId) {
 		Show existing = showDao.getShow(showId);
@@ -156,6 +173,15 @@ public class ShowService {
 							show.setLanguage(movie.getLanguage());
 							show.setMovieName(movie.getMovieName());
 							show.setMovieDuration(movie.getMovieDuration());
+
+							 LocalDateTime endTime = show.getShowStartTime();
+							 LocalTime runTime = movie.getMovieDuration();
+							 
+							 endTime = endTime.plusHours(runTime.getHour());
+							 endTime = endTime.plusMinutes(runTime.getMinute());
+							 endTime = endTime.plusSeconds(runTime.getSecond());
+							
+							show.setShowEndTime(endTime);
 							show.setMovieDescription(movie.getMovieDescription());
 						} else {
 							throw new MovieNotFoundByIdException("Failed to update Show!!");
