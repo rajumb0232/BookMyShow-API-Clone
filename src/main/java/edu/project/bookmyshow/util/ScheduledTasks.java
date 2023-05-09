@@ -32,7 +32,6 @@ public class ScheduledTasks {
 	private TicketDao ticketDao;
 	@Autowired
 	private BookingDao bookingDao;
-	
 	/**
 	 * method to reset
 	 * show status to Closed
@@ -46,7 +45,6 @@ public class ScheduledTasks {
 	 *  
 	 *  method to reset 
 	 *  the show status to ongoing */
-	
 	@Scheduled(cron = "0 * * * * *")
 	public void setShowToOnGoing() {
 		/*
@@ -62,7 +60,6 @@ public class ScheduledTasks {
 			}
 		}
 	}
-	
 	@Scheduled(cron = "0 * * * * *")
 	public void setShowToClosed() {
 		List<Show> shows = showDao.getClosedShows(LocalDateTime.now(), ShowStatus.ON_GOING);
@@ -95,8 +92,6 @@ public class ScheduledTasks {
 			}
 		}
 	}
-	
-	
 	/**
 	 * schedule a task to block seat to the user, and then release after 10min
 	 * 

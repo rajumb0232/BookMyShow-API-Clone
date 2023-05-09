@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import edu.project.bookmyshow.entity.ProductionHouse;
-
 import edu.project.bookmyshow.repository.ProductionHouseRepo;
 
 @Repository

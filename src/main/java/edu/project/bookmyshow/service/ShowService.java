@@ -129,7 +129,7 @@ public class ShowService {
 		}
 	}
 
-	public ResponseEntity<ResponseStructure<Show>> updadeShow(long showId, ShowDto showDto, long screenId,
+	public ResponseEntity<ResponseStructure<Show>> updateShow(long showId, ShowDto showDto, long screenId,
 			long movieId) {
 		Show existing = showDao.getShow(showId);
 		if (existing != null) {
