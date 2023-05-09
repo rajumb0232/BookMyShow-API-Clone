@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import edu.project.bookmyshow.enums.Genre;
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
 public class MovieDto {
