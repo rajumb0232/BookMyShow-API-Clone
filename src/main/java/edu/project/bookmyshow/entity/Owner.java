@@ -35,7 +35,7 @@ public class Owner {
 	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	// @Pattern(regexp = "[a-zA-Z\\s]*")
 	private String ownerName;
-	@Min(value =  6000000000l, message = "PhoneNumber should start with these digits[6,7,8,9]")
+	@Min(value = 6000000000l, message = "PhoneNumber should start with these digits[6,7,8,9] and should be 10 digits")
 	@Max(value =  9999999999l, message = "PhoneNumber must be 10 digits")
 	private long ownerPhoneNumber;
 	@NotBlank(message = "Owner cannot be blank")
@@ -45,7 +45,7 @@ public class Owner {
 	private String ownerEmail;
 	@NotBlank(message = "Owner cannot be blank")
 	@NotNull(message = "Owner cannot be null")
-	@Pattern(regexp = "^(?=.*[0-9])+(?=.*[a-z])+(?=.*[A-Z])+(?=.*[@#$%^&+=])+(?=\\S+$).{8,}$", message = "8 characters mandatory(1 upperCase,1 lowerCase,1 special Character,1 number)")
+	@Pattern(regexp = "^(?=.*[0-9])+(?=.*[a-z])+(?=.*[A-Z])+(?=.*[@#$%^&+=])+(?=\\S+$).{8,}$", message = "minimum 8 characters mandatory(1 upperCase,1 lowerCase,1 special Character,1 number)")
 	private String ownerPassword;
 
 	@OneToMany(mappedBy = "owner")

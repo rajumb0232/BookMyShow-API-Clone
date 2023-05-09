@@ -25,7 +25,7 @@ public class CustomerService {
 		if (dbcustomer != null) {
 			customerDto.setCustomerId(customer.getCustomerId());
 			customerDto.setCustomerName(customer.getCustomerName());
-			customerDto.setCustomrPhoneNumber(customer.getCustomrPhoneNumber());
+			customerDto.setCustomerPhoneNumber(customer.getCustomerPhoneNumber());
 			customerDto.setCustomerEmail(customer.getCustomerEmail());
 			responseStructure.setMessage("customer saved successfully");
 			responseStructure.setStatus(HttpStatus.CREATED.value());
@@ -33,7 +33,6 @@ public class CustomerService {
 			return new ResponseEntity<ResponseStructure<CustomerDto>>(responseStructure, HttpStatus.CREATED);
 		}
 		throw new CustomerNotFoundByIdException("Failed to add Customer!!");
-
 	}
 
 	public ResponseEntity<ResponseStructure<CustomerDto>> deleteCustomer(long customerId) {
@@ -42,7 +41,7 @@ public class CustomerService {
 		if (dbcustomer != null) {
 			customerDto.setCustomerId(dbcustomer.getCustomerId());
 			customerDto.setCustomerName(dbcustomer.getCustomerName());
-			customerDto.setCustomrPhoneNumber(dbcustomer.getCustomrPhoneNumber());
+			customerDto.setCustomerPhoneNumber(dbcustomer.getCustomerPhoneNumber());
 			customerDto.setCustomerEmail(dbcustomer.getCustomerEmail());
 			responseStructure.setMessage("customer deleted successfully");
 			responseStructure.setStatus(HttpStatus.OK.value());
@@ -58,7 +57,7 @@ public class CustomerService {
 		if (dbcustomer != null) {
 			customerDto.setCustomerId(dbcustomer.getCustomerId());
 			customerDto.setCustomerName(dbcustomer.getCustomerName());
-			customerDto.setCustomrPhoneNumber(dbcustomer.getCustomrPhoneNumber());
+			customerDto.setCustomerPhoneNumber(dbcustomer.getCustomerPhoneNumber());
 			customerDto.setCustomerEmail(dbcustomer.getCustomerEmail());
 			responseStructure.setMessage("customer fetched successfully");
 			responseStructure.setStatus(HttpStatus.OK.value());
@@ -74,7 +73,7 @@ public class CustomerService {
 		if(dbcustomer!=null) {
 			customerDto.setCustomerId(dbcustomer.getCustomerId());
 			customerDto.setCustomerName(dbcustomer.getCustomerName());
-			customerDto.setCustomrPhoneNumber(dbcustomer.getCustomrPhoneNumber());
+			customerDto.setCustomerPhoneNumber(dbcustomer.getCustomerPhoneNumber());
 			customerDto.setCustomerEmail(dbcustomer.getCustomerEmail());
 			responseStructure.setMessage("customer updated successfully");
 			responseStructure.setStatus(HttpStatus.OK.value());

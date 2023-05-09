@@ -1,7 +1,8 @@
 package edu.project.bookmyshow.Controller;
 
-import javax.validation.Valid;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

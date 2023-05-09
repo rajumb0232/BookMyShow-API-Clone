@@ -11,9 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -47,8 +44,7 @@ public class Show {
 	private long screenId;
 	private String screenName;
   
-	@Min(value = 1, message = "The minimum Seat price Should be 1")
-	@Max(99999)
+	
 	private double classicSeatPrice;
 	
 	private double goldSeatPrice;

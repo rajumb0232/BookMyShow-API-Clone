@@ -15,7 +15,7 @@ public class ProductionHouseDto {
 	private long productionId;
 	@NotBlank(message = "ProductionName cannot be blank")
 	@NotNull(message = "ProductionName cannot be null")
-	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
+	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "ProductionName should start with capital letter")
 	private String productionName;
 	private LocalDate establishment;
 }
