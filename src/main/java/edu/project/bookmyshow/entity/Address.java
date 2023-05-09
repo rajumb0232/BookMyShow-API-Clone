@@ -19,17 +19,11 @@ public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long addressId;
-
 	private int flatNo;
-
 	private String area;
-
 	private String landmark;
-
 	private String city;
-
 	private String state;
-
 	private String country;
 
 	@OneToOne(mappedBy = "address")
