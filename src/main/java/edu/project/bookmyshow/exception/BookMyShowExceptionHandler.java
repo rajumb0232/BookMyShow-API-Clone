@@ -34,7 +34,25 @@ public class BookMyShowExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<ResponseStructure<String>> MovieNotFoundById(MovieNotFoundByIdException ex) {
+	public ResponseEntity<ResponseStructure<String>> AddressIsNull(AddressIsNullException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Address is null for theater!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> AddressNotFoundById(AddressNotFoundByIdException ex){
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.NOT_FOUND.value());
+		structure.setMessage(ex.getMessage());
+		structure.setData("Address Not Found with the requested Id!!");
+		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> MovieNotFoundById(MovieNotFoundByIdException ex){
 		ResponseStructure<String> structure = new ResponseStructure<>();
 		structure.setStatus(HttpStatus.NOT_FOUND.value());
 		structure.setMessage(ex.getMessage());

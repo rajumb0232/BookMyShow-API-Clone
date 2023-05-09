@@ -41,7 +41,9 @@ public class Show {
 	
 	private long screenId;
 	private String screenName;
-	
+  
+	@Min(value = 1, message = "The minimum Seat price Should be 1")
+	@Max(99999)
 	private double classicSeatPrice;
 	
 	private double goldSeatPrice;

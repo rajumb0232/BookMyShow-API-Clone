@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import edu.project.bookmyshow.enums.Genre;
@@ -30,7 +28,7 @@ public class Movie {
 	private Genre genre1;
 	private Genre genre2;
 	private Genre genre3;
-	@DateTimeFormat(style = "HH:mm")
+
 	private LocalTime movieDuration;
 	private String movieDescription;
 

@@ -17,6 +17,7 @@ import edu.project.bookmyshow.dto.OwnerDto;
 import edu.project.bookmyshow.entity.Owner;
 import edu.project.bookmyshow.service.OwnerService;
 import edu.project.bookmyshow.util.ResponseStructure;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -27,7 +28,8 @@ public class OwnerControllor {
 
 	@Autowired
 	private OwnerService ownerService;
-
+	
+	@ApiModelProperty(required = true)
 	@ApiOperation(value = "Save Owner", notes = " Api is used to save the Owner")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 404, message = "Owner not found for the given  id") })
