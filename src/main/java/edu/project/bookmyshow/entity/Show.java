@@ -51,7 +51,7 @@ public class Show {
 	private long screenId;
 	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String screenName;
-	@Min(1)
+	@Min(value = 1, message = "The minimum Seat price Should be 1")
 	@Max(99999)
 	private double classicSeatPrice;
 	@Min(1)

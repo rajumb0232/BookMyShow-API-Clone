@@ -10,7 +10,6 @@ import lombok.Setter;
 public class ShowDto {
 	private long showId;
 	private LocalDateTime showStartTime;
-	private LocalDateTime showEndTime;
 
 	private double classicSeatPrice;
 	private double goldSeatPrice;
