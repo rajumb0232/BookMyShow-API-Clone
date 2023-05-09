@@ -28,8 +28,8 @@ public class Customer {
 	@NotNull(message = "Customer cannot be null")
 	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String customerName;
-	@Min(6000000000l)
-	@Max(9999999999l)
+	@Min(value =  6000000000l, message = "PhoneNumber should start with these digits[6,7,8,9]")
+	@Max(value =  9999999999l, message = "PhoneNumber must be 10 digits")
 	private long customrPhoneNumber;
 	@NotBlank(message = "Customer cannot be blank")
 	@NotNull(message = "Customer cannot be null")

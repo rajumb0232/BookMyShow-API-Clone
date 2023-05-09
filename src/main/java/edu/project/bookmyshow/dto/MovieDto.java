@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 import edu.project.bookmyshow.enums.Genre;
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
 public class MovieDto {

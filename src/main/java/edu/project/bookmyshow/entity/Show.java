@@ -36,29 +36,23 @@ public class Show {
 	private String showLocation;
 	
 	private long movieId;
-	@NotBlank(message = "movieName cannot be blank")
-	@NotNull(message = "movieName cannot be null")
-	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
+	
 	private String movieName;
 	private String genre;
 	private LocalTime movieDuration;
 	private String movieDescription;
-	@NotBlank(message = "language cannot be blank")
-	@NotNull(message = "language cannot be null")
-	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
+	
 	private String language;
 	
 	private long screenId;
-	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String screenName;
+  
 	@Min(value = 1, message = "The minimum Seat price Should be 1")
 	@Max(99999)
 	private double classicSeatPrice;
-	@Min(1)
-	@Max(99999)
+	
 	private double goldSeatPrice;
-	@Min(1)
-	@Max(99999)
+	
 	private double premiumSeatPrice;
 	
 	@ManyToOne 
