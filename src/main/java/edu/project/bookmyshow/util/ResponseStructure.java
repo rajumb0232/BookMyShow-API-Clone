@@ -1,6 +1,7 @@
 package edu.project.bookmyshow.util;
 
 public class ResponseStructure<T> {
+	
 	private String message;
 	private int status;
 	private Object data;

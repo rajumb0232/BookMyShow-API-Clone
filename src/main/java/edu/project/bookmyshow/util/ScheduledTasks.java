@@ -32,6 +32,7 @@ public class ScheduledTasks {
 	private TicketDao ticketDao;
 	@Autowired
 	private BookingDao bookingDao;
+	
 
 	/**
 	 * method to reset show status to Closed the screen availability to not_alloted,

@@ -2,6 +2,7 @@ package edu.project.bookmyshow.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,13 +25,16 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long customerId;
+	
 	@NotBlank(message = "Customer cannot be blank")
 	@NotNull(message = "Customer cannot be null")
 	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String customerName;
+	@Column(unique = true)
 	@Min(value = 6000000000l, message = "PhoneNumber should start with these digits[6,7,8,9] and should be 10 digits")
 	@Max(value = 9999999999l, message = "PhoneNumber must be 10 digits")
 	private long customerPhoneNumber;
+	@Column(unique = true)
 	@NotBlank(message = "Customer cannot be blank")
 	@NotNull(message = "Customer cannot be null")
 	@Email(regexp = "[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}", message = "invalid email ")
